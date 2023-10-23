@@ -1,28 +1,92 @@
 ---
-layout: layouts/home.njk
+layout: layouts/base.njk
 eleventyNavigation:
   key: Home
   order: 1
-numberOfLatestPostsToShow: 3
 ---
-{% set postsCount = collections.posts | length %}
-{% set latestPostsCount = postsCount | min(numberOfLatestPostsToShow) %}
-<h1>Latest {{ latestPostsCount }} Post{% if latestPostsCount != 1 %}s{% endif %}</h1>
 
-{% set postslist = collections.posts | head(-1 * numberOfLatestPostsToShow) %}
-{% set postslistCounter = postsCount %}
-{% include "postslist.njk" %}
+<div class="relative">
+	<div class="mx-auto max-w-7xl h-full">
+		<div class="relative z-10 pt-14 lg:w-full lg:max-w-2xl md:min-h-[90vh] md:flex">
+			<svg class="absolute inset-y-0 right-8 hidden h-full w-80 translate-x-1/2 transform fill-white lg:block" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+				<polygon points="0,0 90,0 50,100 0,100"/>
+			</svg>
+			<div class="relative px-6 py-32 sm:py-40 lg:px-8 lg:py-56 lg:pr-0 self-center">
+				<div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
+					<h1 class="text-2xl font-bold tracking-tight leading-[3rem] text-gray-900 sm:text-[42px] uppercase">
+						<span class="block sm:text-6xl font-medium">Adam Wills</span> Custom Web Development
+					</h1>
+					<p class="mt-4 sm:mt-2 text-lg leading-8 text-gray-600 ">Helping businesses build better, faster and more accessible products.</p>
+					{# <div class="mt-10 flex items-center gap-x-6">
+						<a href="#" class="bg-brand-red-700 px-3.5 py-2.5 font-semibold text-white shadow-sm hover:bg-brand-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get started</a>
+						<a href="#" class="font-semibold leading-6 text-gray-900">Learn more <span aria-hidden="true">→</span></a>
+					</div> #}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bg-gray-50 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+		<img class="aspect-[3/2] object-cover lg:aspect-auto lg:h-full lg:w-full" src="/img/grid.svg" alt="">
+	</div>
+</div>
 
-{% set morePosts = postsCount - numberOfLatestPostsToShow %}
-{% if morePosts > 0 %}
-<p>{{ morePosts }} more post{% if morePosts != 1 %}s{% endif %} can be found in <a href="/blog/">the archive</a>.</p>
-{% endif %}
+{# Quick intro #}
+<section class="relative isolate overflow-hidden bg-brand-blue bg-gradient-to-br from-brand-blue to-brand-black px-6 py-24 sm:py-32 lg:px-8 text-white">
+	<div class="mx-auto max-w-2xl lg:max-w-4xl prose text-lg">
+		<p class="text-white text-center">
+			Hi! I'm Adam, a software developer from Hamilton, Canada. I work with small to medium-sized organizations, creating custom web applications that solve unique problems that traditional software can't.
+		</p>
+		{# <p class="mt-4 text-md">
+			<a href="#" class="underline underline-offset-4 hover:text-brand-red-600 transition-colors after:content-['→']">Learn more about Adam </a>
+		</p> #}
+		{# <div class="absolute inset-x-0 -top-16 -z-10 flex transform-gpu justify-center overflow-hidden blur-xl" aria-hidden="true">
+			<div class="aspect-[1318/752] w-[82.375rem] flex-none bg-gradient-to-r from-brand-red-100 to-white opacity-10" style="clip-path: polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%);"></div>
+		</div> #}
+	</div>
+</section>
 
-{# List every content page in the project #}
-{#
-<ul>
-	{%- for entry in collections.all %}
-	<li><a href="{{ entry.url }}"><code>{{ entry.url }}</code></a></li>
-	{%- endfor %}
-</ul>
-#}
+{% include "../_includes/components/partners.njk" %}
+
+{# Testimonial #}
+<section class="relative isolate overflow-hidden bg-brand-blue bg-gradient-to-br from-brand-blue to-brand-black text-white px-6 py-24 sm:py-32 lg:px-8">
+	{# <div class="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.brand-red.100),white)] opacity-20"></div>
+<div class="absolute inset-y-0 right-1/2 -z-10 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] bg-white shadow-xl shadow-brand-red-600/10 ring-1 ring-brand-red-50 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center"></div> #}
+	<div class="mx-auto max-w-2xl lg:max-w-4xl">
+		<figure class="mt-10">
+			<blockquote class="text-center text-xl font-semibold leading-9  sm:text-2xl sm:leading-[3rem]">
+				<p>“Adam's technical expertise, organization skills and clear communication made him the ideal developer for our [us]… His willingness to listen, adapt, and incorporate feedback made the entire process a great success.”</p>
+			</blockquote>
+			<figcaption class="mt-10">
+				<img class="mx-auto h-10 w-10 rounded-full" src="/img/mural-routes-headshot.jpeg" alt="">
+				<div class="mt-4 flex items-center justify-center space-x-3 text-base">
+					<div class="font-semibold ">Jackie Santos</div>
+					<svg viewBox="0 0 2 2" width="3" height="3" aria-hidden="true" class="fill-white">
+						<circle cx="1" cy="1" r="1"/>
+					</svg>
+					<div class="text-gray-200">Tech Lead of MuralRoutes</div>
+				</div>
+			</figcaption>
+			{# <p class="text-center">
+				<a class="underline underline-offset-2" href="/work/mural-routes" >Learn more about the story of Mural Routes</a>
+			</p> #}
+		</figure>
+	</div>
+</section>
+
+{# Services #}
+<section class="relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:px-8">
+	<div class="mx-auto prose prose-2xl max-w-4xl">
+		<h2 id="custom-software" class="font-medium uppercase" style="text-wrap: balance">Crafted Software Solutions
+			<span class="text-xl block text-brand-red-700">Tailored for Your Business</span></h2>
+		<div class="border-t-2">
+			<p>Is your small to medium-sized business at a crossroads, caught between the limitations of spreadsheets and the overwhelming scale of enterprise-level ERP systems? Are you trying to manage data scattered across various platforms and finding it hard to figure out what’s crucial for your growth? You're not alone. Many businesses like yours face this very predicament, where off-the-shelf solutions fall short of meeting their unique needs. That's where I come in.</p>
+			<p>I am an experienced software developer specializing in creating custom web applications designed to solve the exact challenges you face. I work to understand the specific obstacles you're up against, and my mission is to empower businesses like yours to thrive in today's competitive landscape. I craft bespoke software solutions precisely tuned to your requirements, ensuring that you can streamline operations, make informed decisions, and scale with confidence.</p>
+			<p class="">
+				<a href="#contact" class="bg-brand-red-700 px-3.5 py-2.5 text-white shadow-sm no-underline hover:bg-brand-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-600">Let's talk!</a>
+			</p>
+
+		</div>
+	</div>
+</section>
+
+{% include "../_includes/components/contactform.njk" %}

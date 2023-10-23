@@ -1,0 +1,65 @@
+<section id="contact" class="relative isolate bg-brand-blue bg-gradient-to-br from-brand-blue to-brand-black text-white px-6 py-24 sm:py-32 lg:px-8">
+	<div class="mx-auto max-w-2xl lg:max-w-6xl">
+		<h2 class="text-xl font-medium uppercase">Let's talk about your project</h2>
+		<div class="mt-12 flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
+			<form name="contact" method="POST" class="lg:flex-auto" netlify>
+				<div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+					<div>
+						<label for="name" class="block leading-6">Name</label>
+						<div class="mt-2.5">
+							<input type="text" required name="first-name" id="first-name" autocomplete="full-name" class="block text-brand-black w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-red-600 sm:text-sm sm:leading-6">
+						</div>
+					</div>
+					<div>
+						<label for="email" class="block leading-6">Email</label>
+						<div class="mt-2.5">
+							<input type="email" required name="email" id="email" autocomplete="email" class="block text-brand-black w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300  focus:ring-2 focus:ring-inset focus:ring-brand-red-600 sm:text-sm sm:leading-6">
+						</div>
+					</div>
+					<div>
+						<label for="company" class="block leading-6">Company</label>
+						<div class="mt-2.5">
+							<input type="text" required name="website" id="company" class="block text-brand-black w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-red-600 sm:text-sm sm:leading-6">
+						</div>
+					</div>
+					<div>
+						<label for="budget" class="block leading-6">Expected Budget</label>
+						<div class="mt-2.5">
+							<select id="budget" required name="budget" class="block text-brand-black w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-red-600 sm:text-sm sm:leading-6">
+								<option value=""></option>
+								<option value="< 5k>">Under $5,000</option>
+								<option value="5-15k">$5,000 - $15,000</option>
+								<option value="5-30k">$15,000 - $30,000</option>
+								<option value="30k+">Over $30,000</option>
+							</select>
+						</div>
+					</div>
+					<div class="sm:col-span-2">
+						<label for="message" class="block leading-6">Tell me about your project…</label>
+						<div class="mt-2.5">
+							<textarea id="message" required name="message" rows="4" class="block text-brand-black w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-red-600 sm:text-sm sm:leading-6"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="mt-10">
+					<button type="submit" class="block  w-full rounded-md bg-brand-red-600 px-3.5 py-2.5 text-center shadow-sm hover:bg-brand-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-600">Send</button>
+				</div>
+			</form>
+			<div class="lg:mt-6 lg:w-[40%] lg:flex-none">
+				<figure class="">
+					<blockquote class="text-lg leading-tight">
+						<p>“One of the qualities that sets Adam apart is his commitment to quality and attention to detail… This dedication to excellence has had a significant positive
+impact on our projects, leading to fewer issues and faster development cycles.”</p>
+					</blockquote>
+					<figcaption class="mt-10 flex gap-x-6">
+						<img src="/img/brett-headshot.jpeg" alt="Brett Slaght" class="h-12 w-12 flex-none rounded-full bg-gray-50">
+						<div>
+							<div class="text-base font-semibold leading-6">Brett Slaght</div>
+							<div class="text-sm leading-6 text-gray-300">Director of IT</div>
+						</div>
+					</figcaption>
+				</figure>
+			</div>
+		</div>
+	</div>
+</section>
