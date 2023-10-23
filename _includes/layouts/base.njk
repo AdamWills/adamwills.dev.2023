@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>{{ title or metadata.title }}</title>
 		<meta name="description" content="{{ description or metadata.description }}">
+		<link rel="preconnect" href="https://use.typekit.net">
 
 		{#- Atom and JSON feeds included by default #}
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="{{ metadata.title }}">
@@ -36,15 +37,6 @@
 		</style>
 		<link rel="stylesheet" href="https://use.typekit.net/qmt0zpl.css" rel="preload" as="font" crossorigin>
 
-		<script defer>
-			{% getBundle "js" %}
-		</script>
-		<!-- Alpine Plugins -->
-		<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
-
-		<!-- Alpine Core -->
-		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
 	</script>
 	{#- Renders the CSS bundle using a separate file, if you can't set CSP directive style-src: 'unsafe-inline' #}
 	{#- <link rel="stylesheet" href="{% getBundleFileUrl "css" %}"> #}
@@ -59,6 +51,15 @@
 	</main>
 
 	{% include "../components/footer.njk" %}
+
+	<script defer>
+		{% getBundle "js" %}
+	</script>
+	<!-- Alpine Plugins -->
+	<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+
+	<!-- Alpine Core -->
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 	<!-- Current page: {{ page.url | htmlBaseUrl }} -->
 </body>

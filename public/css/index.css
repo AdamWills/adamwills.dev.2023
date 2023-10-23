@@ -1659,10 +1659,6 @@ select {
   height: 100%;
 }
 
-.h-4 {
-  height: 1rem;
-}
-
 .max-h-16 {
   max-height: 4rem;
 }
@@ -2247,6 +2243,11 @@ select {
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-brand-red-900:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(138 20 18 / var(--tw-bg-opacity));
+}
+
 .hover\:text-brand-red-600:hover {
   --tw-text-opacity: 1;
   color: rgb(241 20 17 / var(--tw-text-opacity));
@@ -2407,10 +2408,6 @@ select {
 
   .md\:flex {
     display: flex;
-  }
-
-  .md\:aspect-\[3\/2\] {
-    aspect-ratio: 3/2;
   }
 
   .md\:min-h-\[90vh\] {
