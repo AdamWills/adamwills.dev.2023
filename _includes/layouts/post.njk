@@ -1,36 +1,40 @@
 ---
 layout: layouts/base.njk
 ---
-<h1>{{ title }}</h1>
 
-<ul class="post-metadata">
-	<li>
-		<time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time>
-	</li>
-	{%- for tag in tags | filterTagList %}
-		{%- set tagUrl %}/tags/{{ tag | slugify }}/{% endset %}
-		<li>
-			<a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>
-			{%- if not loop.last %}, {% endif %}
-		</li>
-	{%- endfor %}
-</ul>
+<div class="my-12 max-w-prose prose prose-xl mx-auto">
+	<h1 class="text-2xl leading-tight" style="text-wrap: pretty">{{ title }}</h1>
 
-{{ content | safe }}
+	{{ content | safe }}
 
-{%- if collections.posts %}
-	{%- set previousPost = collections.posts | getPreviousCollectionItem %}
-	{%- set nextPost = collections.posts | getNextCollectionItem %}
-	{%- if nextPost or previousPost %}
-		<ul class="links-nextprev">
-			{%- if previousPost %}
-				<li>Previous: <a href="{{ previousPost.url }}">{{ previousPost.data.title }}</a>
-				</li>
-			{% endif %}
-			{%- if nextPost %}
-				<li>Next: <a href="{{ nextPost.url }}">{{ nextPost.data.title }}</a>
-				</li>
-			{% endif %}
-		</ul>
-	{%- endif %}
-{%- endif %}
+	{# {%- if collections.posts %}
+		{%- set previousPost = collections.posts | getPreviousCollectionItem %}
+		{%- set nextPost = collections.posts | getNextCollectionItem %}
+		{%- if nextPost or previousPost %}
+			<ul class="links-nextpre mb-12 mt-12 list-none pl-0">
+				{%- if previousPost %}
+					<li>Previous: <a href="{{ previousPost.url }}">{{ previousPost.data.title }}</a>
+					</li>
+				{% endif %}
+				{%- if nextPost %}
+					<li>Next: <a href="{{ nextPost.url }}">{{ nextPost.data.title }}</a>
+					</li>
+				{% endif %}
+			</ul>
+			<div></div>
+		{% else %}
+			<div class="h-12"></div>
+		{%- endif %}
+	{%- endif %}#}
+</div>
+
+{# <section class="bg-brand-red-100">
+	<div class="mx-auto max-w-6xl px-6 py-24 sm:py-24 lg:flex lg:items-center lg:justify-between lg:px-8">
+		<h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-3xl">Ready to dive in?<br>Get in touch!</h2>
+		<div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
+			<a href="#contact" class="bg-brand-red-700 text-lg px-8 py-1 no-underline text-white shadow-sm hover:bg-brand-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-700">Contact me</a>
+		</div>
+	</div>
+</section> #}
+
+{% include "../components/contactform.njk" %}

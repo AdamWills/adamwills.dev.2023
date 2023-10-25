@@ -3,7 +3,10 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>{{ title or metadata.title }}</title>
+		<title>{{ title or metadata.title }}
+			{% if title %} | {{ metadata.title }}
+			{% endif %}
+		</title>
 		<meta name="description" content="{{ description or metadata.description }}">
 		<link rel="preconnect" href="https://use.typekit.net">
 
@@ -61,6 +64,20 @@
 	<!-- Alpine Core -->
 	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+	{%- if process.env.NODE_ENV == "production" %}
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-YSLTLRDD20"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'G-YSLTLRDD20');
+		</script>
+	{% endif %}
+	<!-- Current env: {{ env.environment  }} -->
 	<!-- Current page: {{ page.url | htmlBaseUrl }} -->
 </body>
 </html>
