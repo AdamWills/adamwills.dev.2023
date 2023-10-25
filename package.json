@@ -4,8 +4,8 @@
 	"description": "A starter repository for a blog web site using the Eleventy site generator.",
 	"scripts": {
 		"build:11ty": "npx @11ty/eleventy",
-		"build:tailwind": "tailwindcss -i src/css/index.css -o _site/css/index.css --minify",
-		"build": "npm-run-all build:*",
+		"build:tailwind": "tailwindcss -i src/css/index.css -o public/css/index.css --minify",
+		"build": "npm-run-all -s build:tailwind build:11ty",
 		"start": "npm-run-all -p dev:*",
 		"dev:11ty": "npx @11ty/eleventy --serve --quiet",
 		"dev:tailwind": "tailwindcss -i src/css/index.css -o public/css/index.css --watch",
