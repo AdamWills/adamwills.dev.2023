@@ -9,6 +9,9 @@
 		</title>
 		<meta name="description" content="{{ description or metadata.description }}">
 		<link rel="preconnect" href="https://use.typekit.net">
+		<link rel="preconnect" href="https://res.cloudinary.com">
+		<link rel="dns-prefetch" href="https://use.typekit.net">
+		<link rel="dns-prefetch" href="https://res.cloudinary.com">
 
 		{#- Atom and JSON feeds included by default #}
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="{{ metadata.title }}">
@@ -54,7 +57,7 @@
 	{#- <link rel="stylesheet" href="{% getBundleFileUrl "css" %}"> #}
 </head>
 <body class="text-base">
-	<a href="#skip" class="transition left-0 bg-primary text-primary-content absolute p-3 m-3 -translate-y-16 focus:translate-y-0">Skip to main content</a>
+	<a href="#skip" class="transition left-0 bg-white text-primary-content absolute z-20 p-3 m-3 -translate-y-24 focus:translate-y-0">Skip to main content</a>
 
 	{% include "../components/nav.njk" %}
 
