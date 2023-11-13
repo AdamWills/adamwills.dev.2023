@@ -4,7 +4,6 @@
 
 * no code vs custom code
 * The Hidden Costs of Off-The-Shelf Software
-* Measuring success
 * Performance
 * What is custom software, anyways?
 * the importance of maintenance on an app
