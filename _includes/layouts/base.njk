@@ -76,7 +76,7 @@
 	<!-- Alpine Core -->
 	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-	{%- if process.env.NODE_ENV == "production" %}
+	{%- if env.environment == "production" %}
 		<!-- Google tag (gtag.js) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-YSLTLRDD20"></script>
 		<script>
