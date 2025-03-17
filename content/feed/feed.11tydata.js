@@ -1,3 +1,5 @@
-module.exports = {
-	eleventyExcludeFromCollections: true
+export default function () {
+	return {
+		eleventyExcludeFromCollections: true,
+	};
 }

@@ -1,15 +1,17 @@
 ---
-layout: layouts/home.njk
+layout: layouts/base.njk
 eleventyNavigation:
   key: Articles
   order: 2
 ---
 
 {% set postslist = collections.posts %}
-<div class="mt-12 prose prose-xl max-w-prose mx-auto">
-	<h1>Articles</h1>
-	<p></p>
-	{% include "postslist.njk" %}
-</div>
+<section class="relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:px-8">
+	<div class="mx-auto prose prose-2xl max-w-4xl">
+		<h1 class="uppercase text-2xl font-semibold">Articles</h1>
+		<p></p>
+		{% include "postslist.njk" %}
+	</div>
 
+</section>
 {% include "../_includes/components/contactform.njk" %}

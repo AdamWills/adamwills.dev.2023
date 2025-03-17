@@ -2,12 +2,13 @@
 layout: layouts/base.njk
 ---
 
-<div class="mt-24 mb-32 max-w-prose prose prose-xl mx-auto">
-	<h1 class="text-2xl leading-tight" style="text-wrap: pretty">{{ title }}</h1>
+<article class="relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:px-8">
+	<div class="mx-auto prose prose-2xl max-w-4xl">
+		<h1 class="text-2xl leading-tight uppercase" style="text-wrap: pretty">{{ title }}</h1>
 
-	{{ content | safe }}
+		{{ content | safe }}
 
-	{# {%- if collections.posts %}
+		{# {%- if collections.posts %}
 		{%- set previousPost = collections.posts | getPreviousCollectionItem %}
 		{%- set nextPost = collections.posts | getNextCollectionItem %}
 		{%- if nextPost or previousPost %}
@@ -26,9 +27,9 @@ layout: layouts/base.njk
 			<div class="h-12"></div>
 		{%- endif %}
 	{%- endif %}#}
-</div>
+	</div>
 
-{# <section class="bg-brand-red-100">
+	{# <section class="bg-brand-red-100">
 	<div class="mx-auto max-w-6xl px-6 py-24 sm:py-24 lg:flex lg:items-center lg:justify-between lg:px-8">
 		<h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-3xl">Ready to dive in?<br>Get in touch!</h2>
 		<div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
@@ -36,5 +37,6 @@ layout: layouts/base.njk
 		</div>
 	</div>
 </section> #}
+</article>
 
 {% include "../components/contactform.njk" %}

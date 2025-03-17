@@ -1,16 +1,15 @@
-const { DateTime } = require("luxon");
-const markdownItAnchor = require("markdown-it-anchor");
+import { DateTime } from "luxon";
+import markdownItAnchor from "markdown-it-anchor";
 
-const pluginRss = require("@11ty/eleventy-plugin-rss");
-const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
-const pluginBundle = require("@11ty/eleventy-plugin-bundle");
-const pluginNavigation = require("@11ty/eleventy-navigation");
-const { EleventyHtmlBasePlugin } = require("@11ty/eleventy");
+import pluginRss from "@11ty/eleventy-plugin-rss";
+import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import pluginBundle from "@11ty/eleventy-plugin-bundle";
+import pluginNavigation from "@11ty/eleventy-navigation";
+import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 
-const pluginDrafts = require("./eleventy.config.drafts.js");
-const pluginImages = require("./eleventy.config.images.js");
+import pluginImages from "./eleventy.config.images.js";
 
-module.exports = function (eleventyConfig) {
+export default async function (eleventyConfig) {
 	// Copy the contents of the `public` folder to the output folder
 	// For example, `./public/css/` ends up in `_site/css/`
 	eleventyConfig.addPassthroughCopy({
@@ -26,7 +25,6 @@ module.exports = function (eleventyConfig) {
 	eleventyConfig.addWatchTarget("content/**/*.{svg,webp,png,jpeg}");
 
 	// App plugins
-	eleventyConfig.addPlugin(pluginDrafts);
 	eleventyConfig.addPlugin(pluginImages);
 
 	// Official plugins
@@ -138,4 +136,4 @@ module.exports = function (eleventyConfig) {
 		// folder name and does **not** affect where things go in the output folder.
 		pathPrefix: "/",
 	};
-};
+}
