@@ -4,7 +4,7 @@ export default function () {
 		url: "https://adamwills.dev",
 		language: "en-CA",
 		description:
-			"Adam Wills is a software developer based in Hamilton, Canada.",
+			"Adam Wills builds custom web applications, workflow automations, and practical AI tools for small and medium-sized organizations.",
 		author: {
 			name: "Adam Wills",
 			email: "adam@adamwills.com",
