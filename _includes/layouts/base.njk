@@ -4,11 +4,45 @@
 		<meta name='impact-site-verification' value='d3f240df-6c8e-4fe9-8c31-e92f4d4a5816'>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>{{ title or metadata.title }}
-			{% if title %} | {{ metadata.title }}
-			{% endif %}
-		</title>
+		{%- if seoTitle %}
+			{%- set pageTitle = seoTitle %}
+		{%- elif title %}
+			{%- set pageTitle = title + " | " + metadata.title %}
+		{%- else %}
+			{%- set pageTitle = metadata.title %}
+		{%- endif %}
+		<title>{{ pageTitle }}</title>
 		<meta name="description" content="{{ description or metadata.description }}">
+		<link rel="canonical" href="{{ metadata.url }}{{ page.url }}">
+		{%- if page.url == "/" %}
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@graph": [
+				{
+					"@type": "Person",
+					"@id": "https://adamwills.dev/#adam",
+					"name": "Adam Wills",
+					"jobTitle": "Laravel Developer & Software Consultant",
+					"url": "https://adamwills.dev/",
+					"sameAs": ["https://www.linkedin.com/in/adamwillsdev/"],
+					"knowsAbout": ["Laravel", "PHP", "Custom web applications", "Workflow automation", "AI integration"],
+					"address": {"@type": "PostalAddress", "addressLocality": "Dundas", "addressRegion": "ON", "addressCountry": "CA"}
+				},
+				{
+					"@type": "ProfessionalService",
+					"@id": "https://adamwills.dev/#business",
+					"name": "Adam Wills Development",
+					"url": "https://adamwills.dev/",
+					"founder": {"@id": "https://adamwills.dev/#adam"},
+					"description": "Custom Laravel web applications, workflow automation and practical AI tools for small businesses, offered on monthly retainers.",
+					"areaServed": ["Hamilton, Ontario", "Dundas, Ontario", "Ontario", "Canada"],
+					"address": {"@type": "PostalAddress", "addressLocality": "Dundas", "addressRegion": "ON", "addressCountry": "CA"}
+				}
+			]
+		}
+		</script>
+		{%- endif %}
 		<link rel="preconnect" href="https://use.typekit.net">
 		<link rel="preconnect" href="https://res.cloudinary.com">
 		<link rel="dns-prefetch" href="https://use.typekit.net">
@@ -24,9 +58,9 @@
 		<link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32"/>
 		<link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16"/>
 
-		<meta property="og:title" content="{{ metadata.title }}"/>
+		<meta property="og:title" content="{{ pageTitle }}"/>
 		<meta property="og:type" content="website"/>
-		<meta property="og:url" content="{{ metadata.url }}"/>
+		<meta property="og:url" content="{{ metadata.url }}{{ page.url }}"/>
 		<meta property="og:image" content="{{metadata.url}}/img/social.png"/>
 		<meta
       property="og:description"
@@ -53,7 +87,6 @@
 		</style>
 		<link rel="stylesheet" href="https://use.typekit.net/qmt0zpl.css" rel="preload" as="font" crossorigin>
 
-	</script>
 	{#- Renders the CSS bundle using a separate file, if you can't set CSP directive style-src: 'unsafe-inline' #}
 	{#- <link rel="stylesheet" href="{% getBundleFileUrl "css" %}"> #}
 </head>
