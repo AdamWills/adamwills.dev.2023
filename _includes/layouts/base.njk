@@ -14,6 +14,9 @@
 		<title>{{ pageTitle }}</title>
 		<meta name="description" content="{{ description or metadata.description }}">
 		<link rel="canonical" href="{{ metadata.url }}{{ page.url }}">
+		{%- if page.url == "/success/" or page.url.startsWith("/tags/") %}
+		<meta name="robots" content="noindex, follow">
+		{%- endif %}
 		{%- if page.url == "/" %}
 		<script type="application/ld+json">
 		{
