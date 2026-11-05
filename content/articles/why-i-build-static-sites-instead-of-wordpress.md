@@ -66,7 +66,7 @@ Contact forms, newsletter signups, and similar features work too. They're handle
 
 ## When static isn't the right fit
 
-I'll talk myself out of some work here. If your site is really an application, with customer accounts, a large online store, or content that changes for every visitor, a purely static site isn't the right answer, and I'll tell you so. Even then, it often makes sense to keep the marketing pages static and put the dynamic parts in a properly built and maintained application.
+If your site is really an application, with customer accounts, a large online store, or content that changes for every visitor, a purely static site isn't the right answer, and I'll tell you so. Even then, it often makes sense to keep the marketing pages static and put the dynamic parts in a properly built and maintained application.
 
 But most business websites are brochures, blogs, and contact forms. They don't need a server assembling every page on every visit. They need to be fast, secure, and still working five years from now without anyone babysitting them.
 
