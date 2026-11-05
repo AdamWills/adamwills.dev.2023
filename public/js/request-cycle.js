@@ -7,7 +7,7 @@
 
 	const move = (from, to, label, kind, extra = {}) => ({ t: "move", from, to, label, kind, ...extra });
 	const work = (node, ms, status, kind, extra = {}) => ({ t: "work", node, ms, status, kind, ...extra });
-	const REQUEST = "Request: Services page";
+	const REQUEST = "Request: Services";
 	const ATTACK = "Malicious request";
 
 	const SCENARIOS = {
@@ -18,7 +18,7 @@
 				{ text: "The server starts up PHP, WordPress, the theme, and every active plugin.", acts: [work("server", 2600, "Loading WordPress…")] },
 				{
 					text: "WordPress asks the database for the page’s content, settings, and menus.",
-					acts: [{ t: "queries", a: "server", b: "db", labels: ["Get settings", "Get page content", "Get menus"] }],
+					acts: [{ t: "queries", a: "server", b: "db", labels: ["Get settings", "Get content", "Get menus"] }],
 				},
 				{ text: "The theme assembles the page from scratch.", acts: [work("server", 1800, "Building the page…")] },
 				{ text: "The finished page is sent back. The next visitor triggers all of this again.", acts: [move("server", "visitor", "Your page", "ok")] },
@@ -147,36 +147,51 @@
 		edge?.classList.add("is-live");
 		edge?.classList.toggle("is-threat", act.kind === "threat");
 
+		// The line draws itself from sender to receiver; the label sits still at its midpoint.
+		const svgNS = "http://www.w3.org/2000/svg";
+		const svg = stageOf(key).querySelector(".rc-edges");
+		const kindClass = act.kind ? ` is-${act.kind}` : "";
+		const A = edgePoint(cA, cB, 3);
+		const B = edgePoint(cB, cA, 3);
+		const len = Math.hypot(B.x - A.x, B.y - A.y);
+		const mid = { x: (A.x + B.x) / 2, y: (A.y + B.y) / 2 };
+
+		const flow = document.createElementNS(svgNS, "line");
+		flow.setAttribute("class", "rc-flow" + kindClass);
+		flow.setAttribute("x1", A.x);
+		flow.setAttribute("y1", A.y);
+		flow.setAttribute("x2", B.x);
+		flow.setAttribute("y2", B.y);
+		flow.style.strokeDasharray = `${len}`;
+		const head = document.createElementNS(svgNS, "circle");
+		head.setAttribute("class", "rc-flow-head" + kindClass);
+		head.setAttribute("r", "4.5");
+		svg.append(flow, head);
+
 		const p = document.createElement("span");
-		p.className = "rc-packet" + (act.kind ? ` is-${act.kind}` : "");
+		p.className = "rc-packet" + kindClass;
 		p.textContent = act.label;
 		layer.append(p);
-		const A = edgePoint(cA, cB, p.offsetWidth / 2 + 4, p.offsetHeight / 2 + 4);
-		const B = edgePoint(cB, cA, p.offsetWidth / 2 + 4, p.offsetHeight / 2 + 4);
 		const at = (pt, s = 1) => `translate(${pt.x}px, ${pt.y}px) translate(-50%, -50%) scale(${s})`;
+		const pos = (pt) => `translate(${pt.x}px, ${pt.y}px)`;
+
+		const draw = reduce.matches ? 0 : quick ? 700 : 1200;
+		const hold = reduce.matches ? (quick ? 1100 : 1700) : quick ? 700 : 1300;
+		const fade = reduce.matches ? 0 : 250;
+		const opts = (duration) => ({ duration, fill: "forwards", easing: "cubic-bezier(.6,0,.35,1)" });
 
 		try {
-			if (reduce.matches) {
-				p.style.transform = at({ x: (A.x + B.x) / 2, y: (A.y + B.y) / 2 });
-				await sleep(r, quick ? 1000 : 1600);
-			} else {
-				const dist = Math.hypot(B.x - A.x, B.y - A.y);
-				const dur = Math.min(1900, Math.max(1000, dist * 3.2)) * (quick ? 0.75 : 1);
-				await track(
-					r,
-					p.animate(
-						[
-							{ transform: at(A, 0.7), opacity: 0 },
-							{ transform: at(A, 1), opacity: 1, offset: 0.12 },
-							{ transform: at(B, 1), opacity: 1, offset: 0.88 },
-							{ transform: at(B, 0.7), opacity: 0 },
-						],
-						{ duration: dur, easing: "cubic-bezier(.6,0,.35,1)", fill: "forwards" }
-					)
-				);
-			}
+			track(r, p.animate([{ transform: at(mid, 0.85), opacity: 0 }, { transform: at(mid, 1), opacity: 1 }], opts(fade || 1)));
+			track(r, head.animate([{ transform: pos(A) }, { transform: pos(B) }], opts(draw || 1)));
+			await track(r, flow.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], opts(draw || 1)));
+			await sleep(r, hold);
+			await Promise.all(
+				[p, flow, head].map((el) => track(r, el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fade || 1, fill: "forwards" })))
+			);
 		} finally {
 			p.remove();
+			flow.remove();
+			head.remove();
 			edge?.classList.remove("is-live", "is-threat");
 		}
 		const target = nodeOf(key, act.to);

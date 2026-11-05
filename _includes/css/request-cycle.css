@@ -78,21 +78,28 @@
 .rc-stage {
 	position: relative;
 	display: grid;
-	gap: 56px 64px;
+	/* Rows are tall so every connection has room for its label with line showing on both sides. */
+	gap: 88px 48px;
 	padding: 34px 4px 30px;
 	align-items: center;
 }
-.rc-stage[data-layout="wp"] {
-	grid-template-columns: 1fr 1.25fr 1fr;
-	grid-template-areas: "visitor server db" "bot server db";
-}
+.rc-stage[data-layout="wp"],
 .rc-stage[data-layout="static"] {
-	grid-template-columns: 1fr 0.6fr 1.3fr;
-	grid-template-areas: "visitor . cdn" "bot . cdn";
+	grid-template-columns: minmax(0, 260px) minmax(0, 260px);
+	justify-content: space-around;
+}
+.rc-stage[data-layout="wp"] { grid-template-areas: "visitor bot" "server server" "db db"; }
+.rc-stage[data-layout="static"] { grid-template-areas: "visitor bot" "cdn cdn"; }
+.rc-stage[data-layout="wp"] [data-node="server"],
+.rc-stage[data-layout="wp"] [data-node="db"],
+.rc-stage[data-layout="static"] [data-node="cdn"] {
+	justify-self: center;
+	width: min(100%, 360px);
 }
 .rc-stage[data-layout="cms"] {
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-template-areas: "editor cms build" "visitor . cdn" "bot . cdn";
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+	grid-template-areas: "editor . cms" ". . build" "visitor . cdn" "bot . cdn";
+	gap: 72px 48px;
 }
 .rc-edges { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: visible; }
 .rc-edges line {
@@ -104,6 +111,23 @@
 }
 .rc-edges line.is-live { stroke: rgba(243, 239, 230, 0.6); animation: rc-dash 0.6s linear infinite; }
 .rc-edges line.is-live.is-threat { stroke: var(--rc-red); }
+.rc-edges .rc-flow {
+	fill: none;
+	stroke: var(--rc-ink);
+	stroke-width: 2.5;
+	stroke-linecap: round;
+	animation: none;
+	filter: drop-shadow(0 0 6px rgba(243, 239, 230, 0.45));
+}
+.rc-edges .rc-flow-head { fill: var(--rc-ink); filter: drop-shadow(0 0 6px rgba(243, 239, 230, 0.6)); }
+.rc-edges .rc-flow.is-ok { stroke: var(--rc-mint); filter: drop-shadow(0 0 6px rgba(142, 230, 181, 0.5)); }
+.rc-edges .rc-flow-head.is-ok { fill: var(--rc-mint); }
+.rc-edges .rc-flow.is-query { stroke: var(--rc-amber); filter: drop-shadow(0 0 6px rgba(255, 181, 71, 0.5)); }
+.rc-edges .rc-flow-head.is-query { fill: var(--rc-amber); }
+.rc-edges .rc-flow.is-threat { stroke: var(--rc-red); filter: drop-shadow(0 0 8px rgba(255, 51, 48, 0.7)); }
+.rc-edges .rc-flow-head.is-threat { fill: var(--rc-red); }
+.rc-edges .rc-flow.is-muted { stroke: #6b6b60; filter: none; }
+.rc-edges .rc-flow-head.is-muted { fill: #6b6b60; }
 .rc-layer { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
 
 /* Nodes */
@@ -286,10 +310,9 @@
 	.rc { margin: 2rem -8px; padding: 16px; }
 	.rc-tabs { width: 100%; }
 	.rc-tab { flex: 1; padding: 8px 4px; font-size: 13px; }
-	.rc-stage { gap: 30px 14px; padding: 26px 0 22px; }
-	.rc-stage[data-layout="wp"] { grid-template-columns: 1fr 1fr; grid-template-areas: "visitor bot" "server server" "db db"; }
-	.rc-stage[data-layout="static"] { grid-template-columns: 1fr 1fr; grid-template-areas: "visitor bot" "cdn cdn"; gap: 70px 14px; }
-	.rc-stage[data-layout="cms"] { grid-template-columns: 1fr 1fr; grid-template-areas: "editor cms" "build build" "cdn cdn" "visitor bot"; }
+	.rc-stage { gap: 64px 14px; padding: 26px 0 22px; }
+	.rc-stage[data-layout="wp"], .rc-stage[data-layout="static"] { grid-template-columns: 1fr 1fr; justify-content: stretch; }
+	.rc-stage[data-layout="cms"] { grid-template-columns: 1fr 1fr; grid-template-areas: "editor editor" "cms cms" "build build" "cdn cdn" "visitor bot"; gap: 64px 14px; }
 	.rc-node { padding: 10px 11px 12px; gap: 2px 8px; }
 	.rc-ico { width: 20px; height: 20px; }
 	.rc-name { font-size: 15px; }
