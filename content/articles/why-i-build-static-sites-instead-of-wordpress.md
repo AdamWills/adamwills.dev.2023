@@ -74,7 +74,7 @@ That's why I recommend static sites for nearly every business website. If you ha
 
 ---
 
-*If you're an existing client running WordPress and you're not sure whether it's been kept up to date, or you're wondering what moving to a static site would involve, get in touch and I'll take a look.*
+*If you're not sure whether a static site is right for you, [get in touch](https://adamwills.dev/#contact) and I'll give you a straight answer.*
 
 ### Sources
 
