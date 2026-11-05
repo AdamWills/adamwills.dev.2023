@@ -1,6 +1,6 @@
 ---
 title: "Moving From WordPress to a Static Site: Why I Recommend It in 2026"
-description: "A critical PHP flaw, an actively exploited WordPress core bug, and AI tools that find vulnerabilities for about $20 each. Here's why I push for static sites on almost every new build, and what a static site actually is."
+description: "A critical PHP flaw, an actively exploited WordPress core bug, and AI tools that find vulnerabilities for about $20 each. Here's what a static site actually is, and why I think it's the better choice for most business websites."
 date: 2026-11-04
 tags:
   - static sites
@@ -12,7 +12,7 @@ If your business website runs on WordPress, the last few weeks have probably bee
 
 That is two serious problems in two weeks, and neither of them had anything to do with a sketchy plugin. They were in the foundation.
 
-This article is for business owners who have a WordPress site, or are about to get one, and want to know whether there's a better way. I think there is, for most sites. I'll explain why the risk is growing, what a static site actually is, and why it's what I recommend on nearly every new site I build.
+This article is for business owners who have a WordPress site, or are about to get one, and want to know whether there's a better way. I think there is, for most sites. I'll explain why the risk is growing, what a static site actually is, and why I think it's the better choice for most business websites.
 
 ## AI has changed the economics of finding vulnerabilities
 
@@ -42,7 +42,7 @@ Here's what that difference looks like, side by side with a third option: a stat
 
 {% include "components/request-cycle.njk" %}
 
-## Why I push for static sites
+## Why I recommend static sites
 
 **Much smaller attack surface.** Both of the recent vulnerabilities required a server running PHP to attack. A static site doesn't have one. There's no login page on your public site, no database to dump, no plugins to exploit. It's hard to break into a folder of HTML files. Static sites aren't immune to every risk, but whole categories of attack simply don't apply.
 
@@ -70,11 +70,11 @@ If your site is really an application, with customer accounts, a large online st
 
 But most business websites are brochures, blogs, and contact forms. They don't need a server assembling every page on every visit. They need to be fast, secure, and still working five years from now without anyone babysitting them.
 
-That's why, whenever I'm building a new site, I push for it to be static. And if you have a WordPress site that's been quietly aging in the background, the past few weeks are a good reason to think about moving it.
+That's why I recommend static sites for nearly every business website. If you have a WordPress site that's been quietly aging in the background, the past few weeks are a good reason to think about moving it.
 
 ---
 
-*If you're running WordPress and aren't sure whether it's been kept up to date, or you're wondering what moving to a static site would involve, I'm happy to take a look and give you a straight answer. [Let's talk.](https://adamwills.dev/#contact)*
+*If you're an existing client running WordPress and you're not sure whether it's been kept up to date, or you're wondering what moving to a static site would involve, get in touch and I'll take a look.*
 
 ### Sources
 
