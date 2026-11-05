@@ -38,6 +38,10 @@ A static site does that assembly work once, ahead of time. When content changes,
 
 To a visitor, a static site looks exactly the same. It can have the same design, the same blog, images, and contact forms. The difference is entirely in what's happening behind the scenes. This site is static, for what it's worth.
 
+Here's what that difference looks like, side by side with a third option: a static site paired with a CMS, so you can still edit content yourself.
+
+{% include "components/request-cycle.njk" %}
+
 ## Why I push for static sites
 
 **Much smaller attack surface.** Both of the recent vulnerabilities required a server running PHP to attack. A static site doesn't have one. There's no login page on your public site, no database to dump, no plugins to exploit. It's hard to break into a folder of HTML files. Static sites aren't immune to every risk, but whole categories of attack simply don't apply.

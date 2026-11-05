@@ -1,0 +1,76 @@
+{%- set ico_visitor = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="1.5"/><path d="M3 8.5h18M6 6.5h.01M8.5 6.5h.01"/></svg>' -%}
+{%- set ico_bot = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="2"/><path d="M12 4v4M9 13h.01M15 13h.01M9.5 16h5M3 12v3M21 12v3"/></svg>' -%}
+{%- set ico_server = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="7" rx="1"/><rect x="4" y="13.5" width="16" height="7" rx="1"/><path d="M7.5 7h.01M7.5 17h.01M11 7h5M11 17h5"/></svg>' -%}
+{%- set ico_db = '<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7" ry="2.5"/><path d="M5 5.5v13c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-13M5 12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5"/></svg>' -%}
+{%- set ico_cdn = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.2 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.2-3.5-8.5s1.1-6.1 3.5-8.5z"/></svg>' -%}
+{%- set ico_editor = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg>' -%}
+{%- set ico_cms = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M8 4v16M11 9h7M11 13h7M11 17h4"/></svg>' -%}
+{%- set ico_build = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7 3 12l5 5M16 7l5 5-5 5M13.5 4.5l-3 15"/></svg>' -%}
+<figure class="rc not-prose" data-request-cycle aria-labelledby="rc-title">
+<div class="rc-head">
+<p class="rc-kicker" id="rc-title">How a page reaches a visitor</p>
+<div class="rc-tabs" role="tablist" aria-label="Choose a setup">
+<button class="rc-tab" role="tab" id="rc-tab-wp" aria-controls="rc-panel-wp" aria-selected="true" data-tab="wp">WordPress</button>
+<button class="rc-tab" role="tab" id="rc-tab-static" aria-controls="rc-panel-static" aria-selected="false" tabindex="-1" data-tab="static">Static</button>
+<button class="rc-tab" role="tab" id="rc-tab-cms" aria-controls="rc-panel-cms" aria-selected="false" tabindex="-1" data-tab="cms">Static + CMS</button>
+</div>
+</div>
+<div class="rc-panel" role="tabpanel" id="rc-panel-wp" aria-labelledby="rc-tab-wp" data-panel="wp">
+<div class="rc-stage" data-layout="wp">
+<svg class="rc-edges" aria-hidden="true"></svg>
+<div class="rc-layer" aria-hidden="true"></div>
+<div class="rc-node" data-node="visitor" style="grid-area:visitor"><span class="rc-ico">{{ ico_visitor | safe }}</span><span class="rc-name">Visitor</span><span class="rc-meta">Browser</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node is-bot" data-node="bot" style="grid-area:bot"><span class="rc-ico">{{ ico_bot | safe }}</span><span class="rc-name">Bot</span><span class="rc-meta">Automated scanner</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="server" style="grid-area:server"><span class="rc-ico">{{ ico_server | safe }}</span><span class="rc-name">Web server</span><span class="rc-meta">Runs on every request</span><span class="rc-chips"><span class="rc-chip" style="--i:0">PHP</span><span class="rc-chip" style="--i:1">WP core</span><span class="rc-chip" style="--i:2">Theme</span><span class="rc-chip" style="--i:3">Plugins ×20</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="db" style="grid-area:db"><span class="rc-ico">{{ ico_db | safe }}</span><span class="rc-name">Database</span><span class="rc-meta">MySQL</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+</div>
+<dl class="rc-stats">
+<div><dt>Code runs per visit</dt><dd class="is-bad">Yes, the whole stack</dd></div>
+<div><dt>Database per visit</dt><dd class="is-bad">Yes, many queries</dd></div>
+<div><dt>What a bot can reach</dt><dd class="is-bad">PHP, plugins, database</dd></div>
+</dl>
+</div>
+<div class="rc-panel" role="tabpanel" id="rc-panel-static" aria-labelledby="rc-tab-static" data-panel="static" hidden>
+<div class="rc-stage" data-layout="static">
+<svg class="rc-edges" aria-hidden="true"></svg>
+<div class="rc-layer" aria-hidden="true"></div>
+<div class="rc-node" data-node="visitor" style="grid-area:visitor"><span class="rc-ico">{{ ico_visitor | safe }}</span><span class="rc-name">Visitor</span><span class="rc-meta">Browser</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node is-bot" data-node="bot" style="grid-area:bot"><span class="rc-ico">{{ ico_bot | safe }}</span><span class="rc-name">Bot</span><span class="rc-meta">Automated scanner</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="cdn" style="grid-area:cdn"><span class="rc-ico">{{ ico_cdn | safe }}</span><span class="rc-name">CDN edge</span><span class="rc-meta">Finished files, built ahead of time</span><span class="rc-chips is-files"><span class="rc-chip">index.html</span><span class="rc-chip" data-chip="services">services.html</span><span class="rc-chip">about.html</span><span class="rc-chip">contact.html</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
+</div>
+<dl class="rc-stats">
+<div><dt>Code runs per visit</dt><dd class="is-good">No</dd></div>
+<div><dt>Database per visit</dt><dd class="is-good">No</dd></div>
+<div><dt>What a bot can reach</dt><dd class="is-good">Plain files only</dd></div>
+</dl>
+</div>
+<div class="rc-panel" role="tabpanel" id="rc-panel-cms" aria-labelledby="rc-tab-cms" data-panel="cms" hidden>
+<div class="rc-stage" data-layout="cms">
+<svg class="rc-edges" aria-hidden="true"></svg>
+<div class="rc-layer" aria-hidden="true"></div>
+<div class="rc-node" data-node="editor" style="grid-area:editor"><span class="rc-ico">{{ ico_editor | safe }}</span><span class="rc-name">You</span><span class="rc-meta">Editing content</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="cms" style="grid-area:cms"><span class="rc-ico">{{ ico_cms | safe }}</span><span class="rc-name">CMS</span><span class="rc-meta">Separate, behind a login</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="build" style="grid-area:build"><span class="rc-ico">{{ ico_build | safe }}</span><span class="rc-name">Build</span><span class="rc-meta">Runs only when you publish</span><span class="rc-chips"><span class="rc-chip" style="--i:0">index</span><span class="rc-chip" style="--i:1">services</span><span class="rc-chip" style="--i:2">about</span><span class="rc-chip" style="--i:3">contact</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="visitor" style="grid-area:visitor"><span class="rc-ico">{{ ico_visitor | safe }}</span><span class="rc-name">Visitor</span><span class="rc-meta">Browser</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node is-bot" data-node="bot" style="grid-area:bot"><span class="rc-ico">{{ ico_bot | safe }}</span><span class="rc-name">Bot</span><span class="rc-meta">Automated scanner</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="cdn" style="grid-area:cdn"><span class="rc-ico">{{ ico_cdn | safe }}</span><span class="rc-name">CDN edge</span><span class="rc-meta">Finished files</span><span class="rc-chips is-files"><span class="rc-chip">index.html</span><span class="rc-chip" data-chip="services">services.html</span><span class="rc-chip">about.html</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
+</div>
+<dl class="rc-stats">
+<div><dt>Code runs per visit</dt><dd class="is-good">No, only on publish</dd></div>
+<div><dt>Database per visit</dt><dd class="is-good">No</dd></div>
+<div><dt>What a bot can reach</dt><dd class="is-good">Plain files only</dd></div>
+</dl>
+</div>
+<div class="rc-foot">
+<div class="rc-progress" aria-hidden="true"></div>
+<div class="rc-caption" aria-hidden="true"><span class="rc-count"></span><span class="rc-phase"></span><span class="rc-text"></span></div>
+<ol class="rc-sr" data-steps></ol>
+<div class="rc-controls">
+<button class="rc-btn" type="button" data-toggle aria-pressed="false">Pause</button>
+<button class="rc-btn" type="button" data-replay>Replay</button>
+</div>
+</div>
+<noscript><p class="rc-noscript">WordPress: every visit runs PHP, WordPress, the theme and plugins, queries the database, then assembles the page. Static: the page is already a finished file, so the CDN just sends it. Static + CMS: the build runs once when you publish, then visits work exactly like a static site.</p></noscript>
+</figure>
+{%- css %}{% include "css/request-cycle.css" %}{% endcss %}
+<script src="/js/request-cycle.js" defer></script>
