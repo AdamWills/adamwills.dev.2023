@@ -20,13 +20,13 @@
 <svg class="rc-edges" aria-hidden="true"></svg>
 <div class="rc-layer" aria-hidden="true"></div>
 <div class="rc-node" data-node="visitor" style="grid-area:visitor"><span class="rc-ico">{{ ico_visitor | safe }}</span><span class="rc-name">Visitor</span><span class="rc-meta">Browser</span><span class="rc-status"></span><span class="rc-bar"></span></div>
-<div class="rc-node is-bot" data-node="bot" style="grid-area:bot"><span class="rc-ico">{{ ico_bot | safe }}</span><span class="rc-name">Bot</span><span class="rc-meta">Automated scanner</span><span class="rc-status"></span><span class="rc-bar"></span></div>
-<div class="rc-node" data-node="server" style="grid-area:server"><span class="rc-ico">{{ ico_server | safe }}</span><span class="rc-name">Web server</span><span class="rc-meta">Runs on every request</span><span class="rc-chips"><span class="rc-chip" style="--i:0">PHP</span><span class="rc-chip" style="--i:1">WP core</span><span class="rc-chip" style="--i:2">Theme</span><span class="rc-chip" style="--i:3">Plugins ×20</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
-<div class="rc-node" data-node="db" style="grid-area:db"><span class="rc-ico">{{ ico_db | safe }}</span><span class="rc-name">Database</span><span class="rc-meta">MySQL</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node is-bot" data-node="bot" style="grid-area:bot"><span class="rc-ico">{{ ico_bot | safe }}</span><span class="rc-name">Bot</span><span class="rc-meta">Looking for weak sites</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="server" style="grid-area:server"><span class="rc-ico">{{ ico_server | safe }}</span><span class="rc-name">Web server</span><span class="rc-meta">Does all the work, on every visit</span><span class="rc-chips"><span class="rc-chip" style="--i:0">PHP</span><span class="rc-chip" style="--i:1">WordPress</span><span class="rc-chip" style="--i:2">Theme</span><span class="rc-chip" style="--i:3">Plugins ×20</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="db" style="grid-area:db"><span class="rc-ico">{{ ico_db | safe }}</span><span class="rc-name">Database</span><span class="rc-meta">Content and settings</span><span class="rc-status"></span><span class="rc-bar"></span></div>
 </div>
 <dl class="rc-stats">
 <div><dt>Code runs per visit</dt><dd class="is-bad">Yes, the whole stack</dd></div>
-<div><dt>Database per visit</dt><dd class="is-bad">Yes, many queries</dd></div>
+<div><dt>Database per visit</dt><dd class="is-bad">Yes, several lookups</dd></div>
 <div><dt>What a bot can reach</dt><dd class="is-bad">PHP, plugins, database</dd></div>
 </dl>
 </div>
@@ -35,8 +35,8 @@
 <svg class="rc-edges" aria-hidden="true"></svg>
 <div class="rc-layer" aria-hidden="true"></div>
 <div class="rc-node" data-node="visitor" style="grid-area:visitor"><span class="rc-ico">{{ ico_visitor | safe }}</span><span class="rc-name">Visitor</span><span class="rc-meta">Browser</span><span class="rc-status"></span><span class="rc-bar"></span></div>
-<div class="rc-node is-bot" data-node="bot" style="grid-area:bot"><span class="rc-ico">{{ ico_bot | safe }}</span><span class="rc-name">Bot</span><span class="rc-meta">Automated scanner</span><span class="rc-status"></span><span class="rc-bar"></span></div>
-<div class="rc-node" data-node="cdn" style="grid-area:cdn"><span class="rc-ico">{{ ico_cdn | safe }}</span><span class="rc-name">CDN edge</span><span class="rc-meta">Finished files, built ahead of time</span><span class="rc-chips is-files"><span class="rc-chip">index.html</span><span class="rc-chip" data-chip="services">services.html</span><span class="rc-chip">about.html</span><span class="rc-chip">contact.html</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node is-bot" data-node="bot" style="grid-area:bot"><span class="rc-ico">{{ ico_bot | safe }}</span><span class="rc-name">Bot</span><span class="rc-meta">Looking for weak sites</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="cdn" style="grid-area:cdn"><span class="rc-ico">{{ ico_cdn | safe }}</span><span class="rc-name">Nearby server</span><span class="rc-meta">A CDN, holding finished pages</span><span class="rc-chips is-files"><span class="rc-chip">Home</span><span class="rc-chip" data-chip="services">Services</span><span class="rc-chip">About</span><span class="rc-chip">Contact</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
 </div>
 <dl class="rc-stats">
 <div><dt>Code runs per visit</dt><dd class="is-good">No</dd></div>
@@ -49,11 +49,11 @@
 <svg class="rc-edges" aria-hidden="true"></svg>
 <div class="rc-layer" aria-hidden="true"></div>
 <div class="rc-node" data-node="editor" style="grid-area:editor"><span class="rc-ico">{{ ico_editor | safe }}</span><span class="rc-name">You</span><span class="rc-meta">Editing content</span><span class="rc-status"></span><span class="rc-bar"></span></div>
-<div class="rc-node" data-node="cms" style="grid-area:cms"><span class="rc-ico">{{ ico_cms | safe }}</span><span class="rc-name">CMS</span><span class="rc-meta">Separate, behind a login</span><span class="rc-status"></span><span class="rc-bar"></span></div>
-<div class="rc-node" data-node="build" style="grid-area:build"><span class="rc-ico">{{ ico_build | safe }}</span><span class="rc-name">Build</span><span class="rc-meta">Runs only when you publish</span><span class="rc-chips"><span class="rc-chip" style="--i:0">index</span><span class="rc-chip" style="--i:1">services</span><span class="rc-chip" style="--i:2">about</span><span class="rc-chip" style="--i:3">contact</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="cms" style="grid-area:cms"><span class="rc-ico">{{ ico_cms | safe }}</span><span class="rc-name">CMS</span><span class="rc-meta">Where you edit, behind a login</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="build" style="grid-area:build"><span class="rc-ico">{{ ico_build | safe }}</span><span class="rc-name">Build</span><span class="rc-meta">Runs only when you publish</span><span class="rc-chips"><span class="rc-chip" style="--i:0">Home</span><span class="rc-chip" style="--i:1">Services</span><span class="rc-chip" style="--i:2">About</span><span class="rc-chip" style="--i:3">Contact</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
 <div class="rc-node" data-node="visitor" style="grid-area:visitor"><span class="rc-ico">{{ ico_visitor | safe }}</span><span class="rc-name">Visitor</span><span class="rc-meta">Browser</span><span class="rc-status"></span><span class="rc-bar"></span></div>
-<div class="rc-node is-bot" data-node="bot" style="grid-area:bot"><span class="rc-ico">{{ ico_bot | safe }}</span><span class="rc-name">Bot</span><span class="rc-meta">Automated scanner</span><span class="rc-status"></span><span class="rc-bar"></span></div>
-<div class="rc-node" data-node="cdn" style="grid-area:cdn"><span class="rc-ico">{{ ico_cdn | safe }}</span><span class="rc-name">CDN edge</span><span class="rc-meta">Finished files</span><span class="rc-chips is-files"><span class="rc-chip">index.html</span><span class="rc-chip" data-chip="services">services.html</span><span class="rc-chip">about.html</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node is-bot" data-node="bot" style="grid-area:bot"><span class="rc-ico">{{ ico_bot | safe }}</span><span class="rc-name">Bot</span><span class="rc-meta">Looking for weak sites</span><span class="rc-status"></span><span class="rc-bar"></span></div>
+<div class="rc-node" data-node="cdn" style="grid-area:cdn"><span class="rc-ico">{{ ico_cdn | safe }}</span><span class="rc-name">Nearby server</span><span class="rc-meta">A CDN, holding finished pages</span><span class="rc-chips is-files"><span class="rc-chip">Home</span><span class="rc-chip" data-chip="services">Services</span><span class="rc-chip">About</span><span class="rc-chip">Contact</span></span><span class="rc-status"></span><span class="rc-bar"></span></div>
 </div>
 <dl class="rc-stats">
 <div><dt>Code runs per visit</dt><dd class="is-good">No, only on publish</dd></div>
@@ -62,12 +62,13 @@
 </dl>
 </div>
 <div class="rc-foot">
-<div class="rc-progress" aria-hidden="true"></div>
-<div class="rc-caption" aria-hidden="true"><span class="rc-count"></span><span class="rc-phase"></span><span class="rc-text"></span></div>
+<div class="rc-progress" role="group" aria-label="Steps"></div>
+<div class="rc-caption"><span class="rc-count"></span><span class="rc-phase"></span><span class="rc-text"></span></div>
 <ol class="rc-sr" data-steps></ol>
 <div class="rc-controls">
-<button class="rc-btn" type="button" data-toggle aria-pressed="false">Pause</button>
-<button class="rc-btn" type="button" data-replay>Replay</button>
+<button class="rc-btn" type="button" data-prev aria-label="Previous step">‹ Back</button>
+<button class="rc-btn rc-btn-main" type="button" data-toggle>Pause</button>
+<button class="rc-btn" type="button" data-next aria-label="Next step">Next ›</button>
 </div>
 </div>
 <noscript><p class="rc-noscript">WordPress: every visit runs PHP, WordPress, the theme and plugins, queries the database, then assembles the page. Static: the page is already a finished file, so the CDN just sends it. Static + CMS: the build runs once when you publish, then visits work exactly like a static site.</p></noscript>
