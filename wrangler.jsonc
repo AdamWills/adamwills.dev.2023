@@ -1,0 +1,29 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "adamwills-dev",
+	"main": "worker/index.js",
+	"compatibility_date": "2026-11-12",
+	"observability": { "enabled": true },
+	"assets": {
+		"directory": "./_site",
+		"binding": "ASSETS",
+		"not_found_handling": "404-page",
+		// Only the contact endpoint runs Worker code; everything else is served
+		// straight from static assets (including _redirects).
+		"run_worker_first": ["/api/*"]
+	},
+	// Contact form submissions can only ever be delivered to this address.
+	"send_email": [
+		{
+			"name": "CONTACT_EMAIL",
+			"destination_address": "adam@adamwills.com",
+			"allowed_sender_addresses": ["contact@adamwills.dev"]
+		}
+	],
+	"vars": {
+		"CONTACT_FROM": "contact@adamwills.dev",
+		"CONTACT_TO": "adam@adamwills.com"
+	}
+	// Secret (set with `npx wrangler secret put TURNSTILE_SECRET_KEY`):
+	//   TURNSTILE_SECRET_KEY
+}

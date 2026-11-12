@@ -2,8 +2,8 @@
 	<div class="mx-auto max-w-2xl lg:max-w-6xl">
 		<h2 class="text-xl font-medium uppercase">Let's talk about your project</h2>
 		<div class="mt-12 flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
-			<form name="contact" method="POST" class="lg:flex-auto" netlify>
-				<input type="hidden" name="subject" value="Contact request from adamwills.dev"/>
+			<form name="contact" method="POST" action="/api/contact" class="lg:flex-auto">
+				<p class="hidden" aria-hidden="true"><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
 				<div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
 					<div>
 						<label for="full-name" class="block leading-6">Name</label>
@@ -42,7 +42,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="mt-10">
+				<div class="mt-8 cf-turnstile" data-sitekey="{{ metadata.turnstileSiteKey }}" data-theme="dark"></div>
+				<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+				<div class="mt-6">
 					<button type="submit" class="block  w-full rounded-md bg-brand-red-700 px-3.5 py-2.5 text-center shadow-xs hover:bg-brand-red-900 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-600">Send</button>
 				</div>
 			</form>
