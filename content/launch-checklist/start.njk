@@ -1,0 +1,212 @@
+---
+layout: layouts/base.njk
+permalink: /launch-checklist/start/
+title: "Launch Readiness Checklist"
+description: "Check whether your AI-built internal tool is ready for the rest of the company."
+noindex: true
+eleventyExcludeFromCollections: true
+---
+{%- set inputClass = "block w-full rounded-md border-0 px-3.5 py-2 text-brand-black shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-red-600 sm:text-sm sm:leading-6" %}
+{%- set labelClass = "block text-sm font-medium leading-6" %}
+{%- set copyBtn = "lc-copy shrink-0 rounded-md bg-white px-3 py-1 text-sm font-medium text-brand-black ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-600" %}
+
+<div data-launch-checklist data-total="{{ launchChecklist.total }}">
+
+<section class="px-6 pt-24 pb-12 sm:pt-32 lg:px-8">
+	<div class="mx-auto prose prose-2xl max-w-4xl">
+		<p class="text-sm uppercase tracking-wide font-medium text-brand-red-700 mb-0">Launch Readiness Checklist</p>
+		<h1 class="text-2xl leading-tight uppercase mt-2" style="text-wrap: pretty">Is your app ready for the rest of the company?</h1>
+		<p>Thanks for signing up. Here's how to use this:</p>
+		<ol>
+			<li><strong>Open the AI tool you built the app with</strong> (Lovable, Bolt, Replit, Cursor, Claude, or whatever you used). If it has a chat-only, "ask", or planning mode that won't make changes, use that.</li>
+			<li><strong>Paste in the setup prompt below first.</strong> It tells the AI to look and explain, not change anything.</li>
+			<li><strong>Work through each check.</strong> Copy the prompt, read the answer, and mark the result green, yellow, or red. If you're not sure, say so. That's useful information too.</li>
+			<li><strong>At the end</strong>, you'll get an overall result and a summary you can send to your manager or IT team.</li>
+		</ol>
+		<p>Your answers are saved in this browser only, so you can come back to it. Nothing is sent anywhere unless you choose to send it.</p>
+	</div>
+</section>
+
+<section class="px-6 pb-12 lg:px-8">
+	<div class="mx-auto max-w-4xl not-prose">
+		<div class="rounded-md bg-amber-50 ring-1 ring-amber-200 px-6 py-5 text-sm leading-6">
+			<p class="font-medium text-base">A word of warning about AI answers</p>
+			<p class="mt-1 text-gray-700">AI tools tend to be confident and want to reassure you. If an answer sounds too tidy, follow up with <em>"Show me exactly where in the code that happens"</em> or <em>"What would a security reviewer worry about here?"</em> And if it can't show you, treat it as yellow.</p>
+		</div>
+
+		<div class="mt-8 rounded-md bg-gray-50 ring-1 ring-gray-200 px-6 py-5">
+			<div class="flex items-start justify-between gap-4">
+				<h2 class="text-base font-medium leading-snug">Step 1: The setup prompt</h2>
+				<button type="button" class="{{ copyBtn }}" data-copy-target="lc-setup-prompt">Copy</button>
+			</div>
+			<pre id="lc-setup-prompt" class="mt-3 whitespace-pre-wrap font-mono text-sm leading-6 text-gray-800">{{ launchChecklist.setupPrompt }}</pre>
+		</div>
+	</div>
+</section>
+
+{%- for section in launchChecklist.sections %}
+<section id="lc-{{ section.id }}" class="px-6 pb-12 lg:px-8">
+	<div class="mx-auto max-w-4xl not-prose">
+		<h2 class="text-lg font-medium uppercase leading-tight">{{ loop.index }}. {{ section.title }}</h2>
+		<p class="mt-2 text-base leading-normal text-gray-600">{{ section.intro }}</p>
+
+		<div class="mt-8 space-y-8">
+		{%- for item in section.items %}
+			<article class="lc-item rounded-md ring-1 ring-gray-200 px-6 py-6" data-item="{{ item.id }}" data-title="{{ item.title }}" {% if item.critical %}data-critical{% endif %}>
+				<h3 class="text-base font-medium leading-snug">
+					<span class="text-gray-400">{{ item.number }}.</span> {{ item.title }}
+					{%- if item.critical %} <span class="ml-1 align-middle inline-block rounded-sm bg-brand-red-50 px-2 text-xs font-medium uppercase tracking-wide text-brand-red-800">Essential</span>{% endif %}
+				</h3>
+				<p class="mt-2 text-sm leading-6 text-gray-700">{{ item.why }}</p>
+
+				{%- if item.ask %}
+				<div class="mt-4 rounded-md bg-blue-50 ring-1 ring-blue-100 px-4 py-3 text-sm leading-6">
+					<p class="font-medium">Ask yourself</p>
+					<p class="text-gray-700">{{ item.ask }}</p>
+				</div>
+				{%- endif %}
+
+				{%- if item.prompt %}
+				<div class="mt-4 rounded-md bg-gray-50 ring-1 ring-gray-200 px-4 py-3">
+					<div class="flex items-start justify-between gap-4">
+						<p class="text-sm font-medium leading-6">Ask your AI tool</p>
+						<button type="button" class="{{ copyBtn }}" data-copy-target="lc-prompt-{{ item.id }}">Copy</button>
+					</div>
+					<pre id="lc-prompt-{{ item.id }}" class="mt-2 whitespace-pre-wrap font-mono text-sm leading-6 text-gray-800">{{ item.prompt }}</pre>
+				</div>
+				{%- endif %}
+
+				<fieldset class="mt-5">
+					<legend class="text-sm font-medium leading-6">Your result</legend>
+					<div class="mt-2 grid grid-cols-1 gap-2 text-sm leading-6">
+						{%- for level in [
+							{ "key": "green", "label": "Green", "text": item.green, "dot": "bg-green-600" },
+							{ "key": "yellow", "label": "Yellow", "text": item.yellow, "dot": "bg-amber-400" },
+							{ "key": "red", "label": "Red", "text": item.red, "dot": "bg-brand-red-700" },
+							{ "key": "unsure", "label": "Not sure", "text": "You couldn't get a clear answer.", "dot": "bg-gray-300" }
+						] %}
+						<label class="lc-option flex items-start gap-3 rounded-md px-3 py-2 ring-1 ring-inset ring-gray-200 cursor-pointer hover:bg-gray-50 has-checked:ring-2 has-checked:ring-brand-blue has-checked:bg-gray-50">
+							<input type="radio" name="lc-{{ item.id }}" value="{{ level.key }}" class="mt-1.5 h-4 w-4 border-gray-300 text-brand-blue focus:ring-brand-blue">
+							<span><span class="inline-block h-2.5 w-2.5 rounded-full {{ level.dot }} mr-1" aria-hidden="true"></span><strong class="font-medium">{{ level.label }}:</strong> {{ level.text }}</span>
+						</label>
+						{%- endfor %}
+					</div>
+				</fieldset>
+
+				<div class="mt-4">
+					<label for="lc-note-{{ item.id }}" class="text-sm font-medium leading-6">Notes <span class="text-gray-400 font-normal">(optional, included in your summary)</span></label>
+					<textarea id="lc-note-{{ item.id }}" data-note="{{ item.id }}" rows="2" class="mt-1 {{ inputClass }}" placeholder="What did the AI say?"></textarea>
+				</div>
+			</article>
+		{%- endfor %}
+		</div>
+	</div>
+</section>
+{%- endfor %}
+
+<section id="lc-results" class="px-6 pb-16 lg:px-8">
+	<div class="mx-auto max-w-4xl not-prose">
+		<h2 class="text-lg font-medium uppercase leading-tight">Your result</h2>
+
+		<p class="mt-4 text-sm text-gray-600" data-progress>0 of {{ launchChecklist.total }} checks answered.</p>
+
+		<div class="mt-4 rounded-md px-6 py-6 ring-1 ring-gray-200" data-verdict>
+			<p class="text-md font-medium leading-snug" data-verdict-title>Work through the checks above to see your result.</p>
+			<p class="mt-2 text-base leading-normal text-gray-700" data-verdict-text></p>
+			<ul class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm" aria-label="Result counts">
+				<li class="rounded-md bg-white ring-1 ring-gray-200 px-3 py-2"><span class="inline-block h-2.5 w-2.5 rounded-full bg-green-600 mr-1" aria-hidden="true"></span><span class="block text-lg font-medium leading-tight" data-count="green">0</span> green</li>
+				<li class="rounded-md bg-white ring-1 ring-gray-200 px-3 py-2"><span class="inline-block h-2.5 w-2.5 rounded-full bg-amber-400 mr-1" aria-hidden="true"></span><span class="block text-lg font-medium leading-tight" data-count="yellow">0</span> yellow</li>
+				<li class="rounded-md bg-white ring-1 ring-gray-200 px-3 py-2"><span class="inline-block h-2.5 w-2.5 rounded-full bg-brand-red-700 mr-1" aria-hidden="true"></span><span class="block text-lg font-medium leading-tight" data-count="red">0</span> red</li>
+				<li class="rounded-md bg-white ring-1 ring-gray-200 px-3 py-2"><span class="inline-block h-2.5 w-2.5 rounded-full bg-gray-300 mr-1" aria-hidden="true"></span><span class="block text-lg font-medium leading-tight" data-count="unsure">0</span> not sure</li>
+			</ul>
+		</div>
+
+		<div class="mt-10">
+			<h3 class="text-base font-medium">A summary for your manager or IT</h3>
+			<p class="mt-1 text-sm leading-6 text-gray-600">This updates as you go. Fill in the details, then copy it into an email and edit it however you like.</p>
+			<div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-3">
+				<div>
+					<label for="lc-app-name" class="{{ labelClass }}">App name</label>
+					<input type="text" id="lc-app-name" data-field="appName" class="mt-1 {{ inputClass }}" placeholder="e.g. the booking tool">
+				</div>
+				<div>
+					<label for="lc-recipient" class="{{ labelClass }}">Who it's for</label>
+					<input type="text" id="lc-recipient" data-field="recipient" class="mt-1 {{ inputClass }}" placeholder="e.g. Sam">
+				</div>
+				<div>
+					<label for="lc-sender" class="{{ labelClass }}">Your name</label>
+					<input type="text" id="lc-sender" data-field="sender" class="mt-1 {{ inputClass }}">
+				</div>
+			</div>
+			<label class="mt-4 flex items-start gap-3 text-sm leading-6">
+				<input type="checkbox" data-field="mentionReview" checked class="mt-1.5 h-4 w-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
+				<span>Mention the option of an outside review (below) if anything needs attention</span>
+			</label>
+			<div class="mt-4 rounded-md bg-gray-50 ring-1 ring-gray-200 px-4 py-3">
+				<div class="flex items-start justify-between gap-4">
+					<label for="lc-summary" class="text-sm font-medium leading-6">Summary</label>
+					<button type="button" class="{{ copyBtn }}" data-copy-target="lc-summary">Copy</button>
+				</div>
+				<textarea id="lc-summary" rows="16" class="mt-2 {{ inputClass }} font-mono" data-summary></textarea>
+			</div>
+			<div class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+				<button type="button" class="underline underline-offset-4 hover:text-brand-red-700 hidden" data-regenerate>Undo my edits and regenerate the summary</button>
+				<button type="button" class="underline underline-offset-4 text-gray-500 hover:text-brand-red-700" data-reset>Clear all my answers</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="review" class="relative isolate bg-brand-blue bg-linear-to-br from-brand-blue to-brand-black text-white px-6 py-24 sm:py-32 lg:px-8">
+	<div class="mx-auto max-w-2xl lg:max-w-4xl">
+		<p class="text-sm uppercase tracking-wide font-medium text-brand-red-300">Want a second opinion?</p>
+		<h2 class="text-xl font-medium uppercase mt-2">The Launch Readiness Review</h2>
+		<div class="mt-6 text-base leading-normal text-gray-200 space-y-4">
+			<p>A checklist can only go so far. You're still relying on the AI to grade its own work. If you've got some yellows and reds, or the app matters too much to guess, I'll look at it properly.</p>
+			<p>I go through your app's code and setup myself, and give you a written report in plain language:</p>
+			<ul class="list-disc pl-6 space-y-2">
+				<li>What's solid, and what's a real risk, ranked by how much it matters</li>
+				<li>Whether to strengthen what you have or rebuild it using your app as the blueprint</li>
+				<li>A rough cost and timeline for each option</li>
+				<li>Written so you can forward it to your manager, IT, or whoever holds the budget</li>
+			</ul>
+			<p class="text-white"><span class="text-lg font-medium">$1,500 CAD</span>, fixed price. If you hire me to do the work afterwards, the full $1,500 comes off the cost of the work.</p>
+		</div>
+
+		<form name="launch-review" method="POST" action="/success/" netlify netlify-honeypot="bot-field" class="mt-12" data-review-form>
+			<input type="hidden" name="subject" value="Launch Readiness Review request from adamwills.dev"/>
+			<input type="hidden" name="checklist-results" data-results-field/>
+			<p class="hidden"><label>Don't fill this out if you're human: <input name="bot-field"/></label></p>
+			<div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+				<div>
+					<label for="lr-name" class="{{ labelClass }}">Name</label>
+					<input type="text" required name="name" id="lr-name" autocomplete="name" class="mt-2.5 {{ inputClass }}">
+				</div>
+				<div>
+					<label for="lr-email" class="{{ labelClass }}">Work email</label>
+					<input type="email" required name="email" id="lr-email" autocomplete="email" class="mt-2.5 {{ inputClass }}">
+				</div>
+				<div class="sm:col-span-2">
+					<label for="lr-company" class="{{ labelClass }}">Company</label>
+					<input type="text" name="company" id="lr-company" autocomplete="organization" class="mt-2.5 {{ inputClass }}">
+				</div>
+				<div class="sm:col-span-2">
+					<label for="lr-message" class="{{ labelClass }}">Anything else I should know? <span class="text-gray-400 font-normal">(optional)</span></label>
+					<textarea id="lr-message" name="message" rows="3" class="mt-2.5 {{ inputClass }}" placeholder="Timelines, who needs to approve it, what you're most worried about…"></textarea>
+				</div>
+				<label class="sm:col-span-2 flex items-start gap-3 text-sm leading-6">
+					<input type="checkbox" name="include-results" value="yes" checked data-include-results class="mt-1.5 h-4 w-4 rounded border-gray-300 text-brand-red-700 focus:ring-brand-red-600">
+					<span>Include my checklist results (it saves us time on the first call)</span>
+				</label>
+			</div>
+			<div class="mt-10">
+				<button type="submit" class="block w-full rounded-md bg-brand-red-700 px-3.5 py-2.5 text-center shadow-xs hover:bg-brand-red-900 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-600">Request a review</button>
+				<p class="mt-4 text-sm text-gray-300">This doesn't commit you to anything. I'll reply to confirm the details and how to share access to the app. Not ready for that? <a href="/meet" class="underline underline-offset-4 text-white hover:text-brand-red-300">Book a free call</a> instead.</p>
+			</div>
+		</form>
+	</div>
+</section>
+
+</div>
+
+<script src="/js/launch-checklist.js" defer></script>
