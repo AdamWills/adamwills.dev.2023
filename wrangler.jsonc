@@ -24,6 +24,7 @@
 		"CONTACT_FROM": "contact@adamwills.dev",
 		"CONTACT_TO": "adam@adamwills.com"
 	}
-	// Secret (set with `npx wrangler secret put TURNSTILE_SECRET_KEY`):
+	// Secrets (set with `npx wrangler secret put <NAME>`):
 	//   TURNSTILE_SECRET_KEY
+	//   DISCORD_WEBHOOK_URL   optional; form submissions are also posted to this Discord channel
 }

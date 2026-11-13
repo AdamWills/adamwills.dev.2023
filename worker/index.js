@@ -4,6 +4,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // in the notification email and the longest value accepted.
 const FORMS = {
 	contact: {
+		title: "Contact request",
 		fields: {
 			"full-name": { label: "Name", max: 200, required: true },
 			email: { label: "Email", max: 320, required: true },
@@ -17,6 +18,7 @@ const FORMS = {
 		missingMessage: "Please fill in your name, a valid email address and a message.",
 	},
 	"launch-checklist": {
+		title: "Launch checklist signup",
 		fields: {
 			name: { label: "Name", max: 200, required: true },
 			email: { label: "Email", max: 320, required: true },
@@ -35,6 +37,7 @@ const FORMS = {
 		missingMessage: "Please fill in your name and a valid email address.",
 	},
 	"launch-review": {
+		title: "Launch Readiness Review request",
 		fields: {
 			name: { label: "Name", max: 200, required: true },
 			email: { label: "Email", max: 320, required: true },
@@ -50,7 +53,7 @@ const FORMS = {
 };
 
 export default {
-	async fetch(request, env) {
+	async fetch(request, env, ctx) {
 		const url = new URL(request.url);
 		const match = url.pathname.match(/^\/api\/([a-z-]+)$/);
 		const form = match && FORMS[match[1]];
@@ -59,14 +62,14 @@ export default {
 			if (request.method !== "POST") {
 				return new Response("Method Not Allowed", { status: 405, headers: { Allow: "POST" } });
 			}
-			return handleForm(form, request, env);
+			return handleForm(form, request, env, ctx);
 		}
 
 		return env.ASSETS.fetch(request);
 	},
 };
 
-async function handleForm(config, request, env) {
+async function handleForm(config, request, env, ctx) {
 	let form;
 	try {
 		form = await request.formData();
@@ -111,6 +114,8 @@ async function handleForm(config, request, env) {
 	].join("\n");
 
 	const name = values[config.nameField];
+	ctx.waitUntil(postToDiscord(config, values, env));
+
 	try {
 		await env.CONTACT_EMAIL.send({
 			from: { email: env.CONTACT_FROM, name: "adamwills.dev" },
@@ -128,6 +133,46 @@ async function handleForm(config, request, env) {
 	}
 
 	return redirect(request, config.redirectTo);
+}
+
+// Posts the submission to a Discord channel through a webhook. Best effort: a Discord
+// failure is logged and never stops the visitor's submission.
+async function postToDiscord(config, values, env) {
+	if (!env.DISCORD_WEBHOOK_URL) return;
+
+	const clip = (text, max) => (text.length > max ? `${text.slice(0, max - 1)}…` : text);
+	const entries = Object.entries(config.fields).filter(([name]) => values[name]);
+	const fields = entries
+		.filter(([, spec]) => !spec.body)
+		.map(([name, spec]) => ({ name: spec.label, value: clip(values[name], 1024), inline: values[name].length < 40 }));
+	const description = entries
+		.filter(([, spec]) => spec.body)
+		.map(([name, spec]) => `**${spec.label}**\n${values[name]}`)
+		.join("\n\n");
+
+	try {
+		const res = await fetch(env.DISCORD_WEBHOOK_URL, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				username: "adamwills.dev",
+				// Visitor text must never ping anyone (@everyone, roles, users).
+				allowed_mentions: { parse: [] },
+				embeds: [
+					{
+						title: clip(`${config.title}: ${values[config.nameField]}`, 256),
+						// Discord rejects embeds over 6,000 characters in total; this leaves room for the fields.
+						description: clip(description, 2500) || undefined,
+						fields: fields.slice(0, 25),
+						timestamp: new Date().toISOString(),
+					},
+				],
+			}),
+		});
+		if (!res.ok) console.error("Discord webhook failed", res.status, await res.text());
+	} catch (err) {
+		console.error("Discord webhook failed", err);
+	}
 }
 
 async function verifyTurnstile(token, request, env) {
