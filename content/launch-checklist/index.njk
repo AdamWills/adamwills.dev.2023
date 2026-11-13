@@ -1,0 +1,167 @@
+---
+layout: layouts/base.njk
+title: "The Launch Readiness Checklist for AI-Built Internal Tools"
+description: "Built an internal tool with AI and want your company to use it for real? A free, plain-language checklist with copy-paste prompts to check whether it's ready, and a summary to share with your manager or IT."
+---
+{%- set inputClass = "block w-full rounded-md border-0 px-3.5 py-2 text-brand-black shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-red-600 sm:text-sm sm:leading-6" %}
+{%- set labelClass = "block text-sm font-medium leading-6" %}
+
+<section class="relative isolate overflow-hidden px-6 pt-24 pb-16 sm:pt-32 lg:px-8">
+	<div class="mx-auto prose prose-2xl max-w-4xl">
+		<p class="text-sm uppercase tracking-wide font-medium text-brand-red-700 mb-0">Free checklist</p>
+		<h1 class="text-2xl leading-tight uppercase mt-2" style="text-wrap: pretty">You built a tool with AI. Is it ready for the rest of the company?</h1>
+
+		<p>Maybe it started as a fix for something that bugged you. Now your team uses it every day, other departments want it, and someone has asked the question: <em>can we roll this out properly?</em></p>
+
+		<p>This checklist helps you answer that honestly, without needing to be a developer. It walks through the things AI-built apps most often skip, in plain language, with a copy-paste prompt for each one so the AI tool you built it with can check its own work.</p>
+	</div>
+</section>
+
+<section class="px-6 pb-16 lg:px-8">
+	<div class="mx-auto max-w-4xl not-prose">
+		<h2 class="text-md font-medium uppercase">What's inside</h2>
+		<ul class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+			{%- for section in launchChecklist.sections %}
+			<li class="rounded-md bg-gray-50 px-5 py-4 ring-1 ring-gray-200">
+				<span class="block text-base font-medium leading-snug">{{ section.title }}</span>
+				<span class="block text-sm text-gray-600 mt-1">{{ section.items | length }} checks</span>
+			</li>
+			{%- endfor %}
+		</ul>
+		<div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3 text-sm">
+			<div>
+				<p class="font-medium text-base">Prompts that check, not fix</p>
+				<p class="text-gray-600 mt-1">Every prompt asks your AI tool to look and explain, not to change code. Works with Lovable, Bolt, Replit, Cursor, Claude, or whatever you used.</p>
+			</div>
+			<div>
+				<p class="font-medium text-base">A traffic-light result</p>
+				<p class="text-gray-600 mt-1">Mark each item green, yellow, or red and get an honest read on where you stand. Plenty of tools turn out to be fine.</p>
+			</div>
+			<div>
+				<p class="font-medium text-base">A summary for your manager</p>
+				<p class="text-gray-600 mt-1">Finish with a short, ready-to-send summary for your manager or IT team, so the conversation starts with facts.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="review" class="px-6 pb-24 lg:px-8">
+	<div class="mx-auto max-w-4xl not-prose rounded-md bg-gray-50 ring-1 ring-gray-200 px-6 py-8 sm:px-10">
+		<p class="text-sm uppercase tracking-wide font-medium text-brand-red-700">Rather have someone look at it?</p>
+		<h2 class="text-md font-medium uppercase leading-tight mt-1">The Launch Readiness Review</h2>
+		<p class="mt-4 text-base leading-normal text-gray-700">I go through your app's code and setup myself and give you a plain-language written report: what's solid, what's risky, whether to strengthen it or rebuild it using your app as the blueprint, and a rough cost for each. It's written so you can forward it straight to your manager or IT.</p>
+		<p class="mt-4 text-base leading-normal"><span class="font-medium">$1,500 CAD, fixed price.</span> If you hire me to do the work afterwards, the full $1,500 comes off the cost.</p>
+		<p class="mt-6 text-base leading-normal">
+			<a href="/launch-checklist/start/#review" class="inline-block bg-brand-red-700 px-6 py-1 text-white shadow-xs hover:bg-brand-red-800 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-700">Request a review</a>
+			<a href="/meet" class="ml-4 underline underline-offset-4 hover:text-brand-red-700">or book a free call</a>
+		</p>
+	</div>
+</section>
+
+<section id="get-the-checklist" class="relative isolate bg-brand-blue bg-linear-to-br from-brand-blue to-brand-black text-white px-6 py-24 sm:py-32 lg:px-8">
+	<div class="mx-auto max-w-2xl lg:max-w-4xl">
+		<h2 class="text-xl font-medium uppercase">Get the checklist</h2>
+		<p class="mt-4 text-base leading-normal text-gray-200">Pop in your details and you'll go straight to it. Only your name and email are required. The rest helps me make the checklist better, and helps me give you a more useful answer if you get in touch.</p>
+
+		<form name="launch-checklist" method="POST" action="/api/launch-checklist" class="mt-12">
+			<p class="hidden" aria-hidden="true"><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+			<div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+				<div>
+					<label for="lc-name" class="{{ labelClass }}">Name</label>
+					<div class="mt-2.5"><input type="text" required name="name" id="lc-name" autocomplete="name" class="{{ inputClass }}"></div>
+				</div>
+				<div>
+					<label for="lc-email" class="{{ labelClass }}">Work email</label>
+					<div class="mt-2.5"><input type="email" required name="email" id="lc-email" autocomplete="email" class="{{ inputClass }}"></div>
+				</div>
+				<div>
+					<label for="lc-company" class="{{ labelClass }}">Company <span class="text-gray-400 font-normal">(optional)</span></label>
+					<div class="mt-2.5"><input type="text" name="company" id="lc-company" autocomplete="organization" class="{{ inputClass }}"></div>
+				</div>
+				<div>
+					<label for="lc-role" class="{{ labelClass }}">Your role <span class="text-gray-400 font-normal">(optional)</span></label>
+					<div class="mt-2.5"><input type="text" name="role" id="lc-role" autocomplete="organization-title" placeholder="e.g. Operations Manager" class="{{ inputClass }}"></div>
+				</div>
+				<div class="sm:col-span-2">
+					<label for="lc-app" class="{{ labelClass }}">What does your app do? <span class="text-gray-400 font-normal">(optional)</span></label>
+					<div class="mt-2.5"><input type="text" name="app-description" id="lc-app" placeholder="e.g. Tracks equipment bookings for our warehouse team" class="{{ inputClass }}"></div>
+				</div>
+				<div>
+					<label for="lc-tool" class="{{ labelClass }}">What did you build it with? <span class="text-gray-400 font-normal">(optional)</span></label>
+					<div class="mt-2.5">
+						<select id="lc-tool" name="tool" class="{{ inputClass }}">
+							<option value=""></option>
+							<option>Lovable</option>
+							<option>Bolt</option>
+							<option>Replit</option>
+							<option>Cursor</option>
+							<option>Claude / Claude Code</option>
+							<option>ChatGPT / Codex</option>
+							<option>v0</option>
+							<option>A mix of tools</option>
+							<option>Other</option>
+						</select>
+					</div>
+				</div>
+				<div>
+					<label for="lc-users" class="{{ labelClass }}">Who uses it today? <span class="text-gray-400 font-normal">(optional)</span></label>
+					<div class="mt-2.5">
+						<select id="lc-users" name="users" class="{{ inputClass }}">
+							<option value=""></option>
+							<option>Just me</option>
+							<option>My team</option>
+							<option>Several teams</option>
+							<option>Customers or people outside the company</option>
+						</select>
+					</div>
+				</div>
+				<fieldset class="sm:col-span-2">
+					<legend class="{{ labelClass }}">What kind of information does it hold? <span class="text-gray-400 font-normal">(optional, pick any)</span></legend>
+					<div class="mt-2.5 grid grid-cols-1 gap-2 sm:grid-cols-2 text-sm leading-6">
+						<label class="flex items-center gap-3"><input type="checkbox" name="data[]" value="Internal business info only" class="h-4 w-4 rounded border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> Internal business info only</label>
+						<label class="flex items-center gap-3"><input type="checkbox" name="data[]" value="Customer information" class="h-4 w-4 rounded border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> Customer information</label>
+						<label class="flex items-center gap-3"><input type="checkbox" name="data[]" value="Employee or HR information" class="h-4 w-4 rounded border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> Employee or HR information</label>
+						<label class="flex items-center gap-3"><input type="checkbox" name="data[]" value="Financial information" class="h-4 w-4 rounded border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> Financial information</label>
+						<label class="flex items-center gap-3"><input type="checkbox" name="data[]" value="Health or other sensitive information" class="h-4 w-4 rounded border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> Health or other sensitive information</label>
+						<label class="flex items-center gap-3"><input type="checkbox" name="data[]" value="Not sure" class="h-4 w-4 rounded border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> Not sure</label>
+					</div>
+				</fieldset>
+				<fieldset class="sm:col-span-2">
+					<legend class="{{ labelClass }}">Does your IT team know about it? <span class="text-gray-400 font-normal">(optional)</span></legend>
+					<div class="mt-2.5 flex flex-wrap gap-x-8 gap-y-2 text-sm leading-6">
+						<label class="flex items-center gap-3"><input type="radio" name="it-aware" value="Yes" class="h-4 w-4 border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> Yes</label>
+						<label class="flex items-center gap-3"><input type="radio" name="it-aware" value="No" class="h-4 w-4 border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> No</label>
+						<label class="flex items-center gap-3"><input type="radio" name="it-aware" value="Not sure" class="h-4 w-4 border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> Not sure</label>
+						<label class="flex items-center gap-3"><input type="radio" name="it-aware" value="We don't have an IT team" class="h-4 w-4 border-gray-300 text-brand-red-700 focus:ring-brand-red-600"> We don't have an IT team</label>
+					</div>
+				</fieldset>
+				<div class="sm:col-span-2">
+					<label for="lc-worry" class="{{ labelClass }}">What's your biggest worry about rolling it out? <span class="text-gray-400 font-normal">(optional)</span></label>
+					<div class="mt-2.5"><textarea id="lc-worry" name="worry" rows="3" class="{{ inputClass }}"></textarea></div>
+				</div>
+			</div>
+
+			<div class="mt-8 cf-turnstile" data-sitekey="{{ metadata.turnstileSiteKey }}" data-theme="dark"></div>
+			<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+			<div class="mt-6">
+				<button type="submit" class="block w-full rounded-md bg-brand-red-700 px-3.5 py-2.5 text-center shadow-xs hover:bg-brand-red-900 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-600">Show me the checklist</button>
+				<p class="mt-4 text-sm text-gray-300">No spam, and I won't share your details. I'm a solo developer in Hamilton, Ontario, not a marketing department.</p>
+			</div>
+		</form>
+	</div>
+</section>
+
+<script>
+	// Remember the signup details in this browser so the checklist can prefill its forms.
+	document.querySelector('form[name="launch-checklist"]').addEventListener("submit", (event) => {
+		const form = event.target;
+		try {
+			localStorage.setItem("launch-checklist:profile", JSON.stringify({
+				name: form.elements.name.value,
+				email: form.elements.email.value,
+				company: form.elements.company.value,
+			}));
+		} catch {}
+	});
+</script>

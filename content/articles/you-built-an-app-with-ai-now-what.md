@@ -50,4 +50,6 @@ If you've crossed that line, or you're about to, the good news is that you're in
 
 ---
 
-*If you've built something with AI and you're wondering whether it's ready for real users, I'm happy to take a look and tell you honestly what it would take. Sometimes the answer is "less than you'd think." [Let's talk.](https://adamwills.dev/#contact)*
+*Built an internal tool at work and wondering if it's ready for the rest of the company? Start with my free [Launch Readiness Checklist](/launch-checklist/): plain-language checks, copy-paste prompts for your AI tool, and a summary you can send to your manager.*
+
+*Or if you'd rather I just take a look, I'm happy to tell you honestly what it would take. Sometimes the answer is "less than you'd think." [Let's talk.](https://adamwills.dev/#contact)*
