@@ -63,9 +63,8 @@ description: "Built an internal tool with AI and want your company to use it for
 		<h2 class="text-xl font-medium uppercase">Get the checklist</h2>
 		<p class="mt-4 text-base leading-normal text-gray-200">Pop in your details and you'll go straight to it. Only your name and email are required. The rest helps me make the checklist better, and helps me give you a more useful answer if you get in touch.</p>
 
-		<form name="launch-checklist" method="POST" action="/launch-checklist/start/" netlify netlify-honeypot="bot-field" class="mt-12">
-			<input type="hidden" name="subject" value="Launch checklist signup from adamwills.dev"/>
-			<p class="hidden"><label>Don't fill this out if you're human: <input name="bot-field"/></label></p>
+		<form name="launch-checklist" method="POST" action="/api/launch-checklist" class="mt-12">
+			<p class="hidden" aria-hidden="true"><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
 
 			<div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
 				<div>
@@ -143,7 +142,9 @@ description: "Built an internal tool with AI and want your company to use it for
 				</div>
 			</div>
 
-			<div class="mt-10">
+			<div class="mt-8 cf-turnstile" data-sitekey="{{ metadata.turnstileSiteKey }}" data-theme="dark"></div>
+			<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+			<div class="mt-6">
 				<button type="submit" class="block w-full rounded-md bg-brand-red-700 px-3.5 py-2.5 text-center shadow-xs hover:bg-brand-red-900 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-600">Show me the checklist</button>
 				<p class="mt-4 text-sm text-gray-300">No spam, and I won't share your details. I'm a solo developer in Hamilton, Ontario, not a marketing department.</p>
 			</div>

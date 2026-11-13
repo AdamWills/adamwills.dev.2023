@@ -173,10 +173,9 @@ eleventyExcludeFromCollections: true
 			<p class="text-white"><span class="text-lg font-medium">$1,500 CAD</span>, fixed price. If you hire me to do the work afterwards, the full $1,500 comes off the cost of the work.</p>
 		</div>
 
-		<form name="launch-review" method="POST" action="/success/" netlify netlify-honeypot="bot-field" class="mt-12" data-review-form>
-			<input type="hidden" name="subject" value="Launch Readiness Review request from adamwills.dev"/>
+		<form name="launch-review" method="POST" action="/api/launch-review" class="mt-12" data-review-form>
 			<input type="hidden" name="checklist-results" data-results-field/>
-			<p class="hidden"><label>Don't fill this out if you're human: <input name="bot-field"/></label></p>
+			<p class="hidden" aria-hidden="true"><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
 			<div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
 				<div>
 					<label for="lr-name" class="{{ labelClass }}">Name</label>
@@ -199,7 +198,9 @@ eleventyExcludeFromCollections: true
 					<span>Include my checklist results (it saves us time on the first call)</span>
 				</label>
 			</div>
-			<div class="mt-10">
+			<div class="mt-8 cf-turnstile" data-sitekey="{{ metadata.turnstileSiteKey }}" data-theme="dark"></div>
+			<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+			<div class="mt-6">
 				<button type="submit" class="block w-full rounded-md bg-brand-red-700 px-3.5 py-2.5 text-center shadow-xs hover:bg-brand-red-900 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red-600">Request a review</button>
 				<p class="mt-4 text-sm text-gray-300">This doesn't commit you to anything. I'll reply to confirm the details and how to share access to the app. Not ready for that? <a href="/meet" class="underline underline-offset-4 text-white hover:text-brand-red-300">Book a free call</a> instead.</p>
 			</div>

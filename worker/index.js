@@ -1,21 +1,72 @@
-const MAX_LENGTH = { "full-name": 200, email: 320, website: 200, budget: 50, message: 10000 };
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Each form posts to /api/<name>. `fields` maps form field names to the label used
+// in the notification email and the longest value accepted.
+const FORMS = {
+	contact: {
+		fields: {
+			"full-name": { label: "Name", max: 200, required: true },
+			email: { label: "Email", max: 320, required: true },
+			website: { label: "Company", max: 200 },
+			budget: { label: "Budget", max: 50 },
+			message: { label: "Message", max: 10000, required: true, body: true },
+		},
+		nameField: "full-name",
+		subject: (name) => `Contact request from adamwills.dev: ${name}`,
+		redirectTo: "/success/",
+		missingMessage: "Please fill in your name, a valid email address and a message.",
+	},
+	"launch-checklist": {
+		fields: {
+			name: { label: "Name", max: 200, required: true },
+			email: { label: "Email", max: 320, required: true },
+			company: { label: "Company", max: 200 },
+			role: { label: "Role", max: 200 },
+			"app-description": { label: "What the app does", max: 1000 },
+			tool: { label: "Built with", max: 100 },
+			users: { label: "Who uses it", max: 100 },
+			"data[]": { label: "Data it holds", max: 500, multiple: true },
+			"it-aware": { label: "IT knows about it", max: 100 },
+			worry: { label: "Biggest worry", max: 5000, body: true },
+		},
+		nameField: "name",
+		subject: (name) => `Launch checklist signup: ${name}`,
+		redirectTo: "/launch-checklist/start/",
+		missingMessage: "Please fill in your name and a valid email address.",
+	},
+	"launch-review": {
+		fields: {
+			name: { label: "Name", max: 200, required: true },
+			email: { label: "Email", max: 320, required: true },
+			company: { label: "Company", max: 200 },
+			message: { label: "Message", max: 10000, body: true },
+			"checklist-results": { label: "Checklist results", max: 50000, body: true },
+		},
+		nameField: "name",
+		subject: (name) => `Launch Readiness Review request: ${name}`,
+		redirectTo: "/success/",
+		missingMessage: "Please fill in your name and a valid email address.",
+	},
+};
 
 export default {
 	async fetch(request, env) {
 		const url = new URL(request.url);
+		const match = url.pathname.match(/^\/api\/([a-z-]+)$/);
+		const form = match && FORMS[match[1]];
 
-		if (url.pathname === "/api/contact") {
+		if (form) {
 			if (request.method !== "POST") {
 				return new Response("Method Not Allowed", { status: 405, headers: { Allow: "POST" } });
 			}
-			return handleContact(request, env);
+			return handleForm(form, request, env);
 		}
 
 		return env.ASSETS.fetch(request);
 	},
 };
 
-async function handleContact(request, env) {
+async function handleForm(config, request, env) {
 	let form;
 	try {
 		form = await request.formData();
@@ -27,24 +78,23 @@ async function handleContact(request, env) {
 
 	// Honeypot: real people never fill this hidden field.
 	if (field("bot-field")) {
-		return redirect(request, "/success/");
+		return redirect(request, config.redirectTo);
 	}
 
-	const data = {
-		name: field("full-name"),
-		email: field("email"),
-		company: field("website"),
-		budget: field("budget"),
-		message: field("message"),
-	};
-
-	if (!data.name || !data.email || !data.message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-		return errorPage(400, "Please fill in your name, a valid email address and a message.");
-	}
-	for (const [name, max] of Object.entries(MAX_LENGTH)) {
-		if (field(name).length > max) {
+	const values = {};
+	for (const [name, spec] of Object.entries(config.fields)) {
+		const value = spec.multiple
+			? form.getAll(name).map((v) => String(v).trim()).filter(Boolean).join(", ")
+			: field(name);
+		if (value.length > spec.max) {
 			return errorPage(400, "One of the fields is too long. Please shorten it and try again.");
 		}
+		values[name] = value;
+	}
+
+	const missing = Object.entries(config.fields).some(([name, spec]) => spec.required && !values[name]);
+	if (missing || !EMAIL_PATTERN.test(values.email)) {
+		return errorPage(400, config.missingMessage);
 	}
 
 	const human = await verifyTurnstile(field("cf-turnstile-response"), request, env);
@@ -52,32 +102,32 @@ async function handleContact(request, env) {
 		return errorPage(403, "We couldn't verify that you're human. Please go back and try again.");
 	}
 
+	const entries = Object.entries(config.fields);
 	const text = [
-		`Name: ${data.name}`,
-		`Email: ${data.email}`,
-		`Company: ${data.company || "-"}`,
-		`Budget: ${data.budget || "-"}`,
-		"",
-		data.message,
+		...entries.filter(([, spec]) => !spec.body).map(([name, spec]) => `${spec.label}: ${values[name] || "-"}`),
+		...entries
+			.filter(([name, spec]) => spec.body && values[name])
+			.flatMap(([name, spec]) => ["", `${spec.label}:`, values[name]]),
 	].join("\n");
 
+	const name = values[config.nameField];
 	try {
 		await env.CONTACT_EMAIL.send({
 			from: { email: env.CONTACT_FROM, name: "adamwills.dev" },
 			to: env.CONTACT_TO,
-			replyTo: { email: data.email, name: data.name },
-			subject: `Contact request from adamwills.dev: ${data.name}`.slice(0, 200),
+			replyTo: { email: values.email, name },
+			subject: config.subject(name).slice(0, 200),
 			text,
 		});
 	} catch (err) {
-		console.error("Contact email failed", err.code, err.message);
+		console.error("Form email failed", err.code, err.message);
 		return errorPage(
 			502,
-			"Something went wrong sending your message. Please try again, or email adam@adamwills.com directly.",
+			"Something went wrong sending your details. Please try again, or email adam@adamwills.com directly.",
 		);
 	}
 
-	return redirect(request, "/success/");
+	return redirect(request, config.redirectTo);
 }
 
 async function verifyTurnstile(token, request, env) {
@@ -104,6 +154,6 @@ function redirect(request, path) {
 }
 
 function errorPage(status, message) {
-	const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Message not sent</title></head><body style="font-family:system-ui,sans-serif;max-width:40rem;margin:4rem auto;padding:0 1rem;line-height:1.5"><h1>Message not sent</h1><p>${message}</p><p><a href="javascript:history.back()">Go back</a> &middot; <a href="/">Home</a></p></body></html>`;
+	const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Not sent</title></head><body style="font-family:system-ui,sans-serif;max-width:40rem;margin:4rem auto;padding:0 1rem;line-height:1.5"><h1>Not sent</h1><p>${message}</p><p><a href="javascript:history.back()">Go back</a> &middot; <a href="/">Home</a></p></body></html>`;
 	return new Response(html, { status, headers: { "Content-Type": "text/html; charset=utf-8" } });
 }
