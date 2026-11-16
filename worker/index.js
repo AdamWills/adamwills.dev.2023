@@ -1,3 +1,5 @@
+import { checkSpam } from "./spam.js";
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Each form posts to /api/<name>. `fields` maps form field names to the label used
@@ -105,8 +107,11 @@ async function handleForm(config, request, env, ctx) {
 		return errorPage(403, "We couldn't verify that you're human. Please go back and try again.");
 	}
 
+	const spam = await checkSpam(config, values, env);
+
 	const entries = Object.entries(config.fields);
 	const text = [
+		...(spam.spam ? [`Likely spam: ${spam.reason}`, ""] : []),
 		...entries.filter(([, spec]) => !spec.body).map(([name, spec]) => `${spec.label}: ${values[name] || "-"}`),
 		...entries
 			.filter(([name, spec]) => spec.body && values[name])
@@ -114,14 +119,14 @@ async function handleForm(config, request, env, ctx) {
 	].join("\n");
 
 	const name = values[config.nameField];
-	ctx.waitUntil(postToDiscord(config, values, env));
+	ctx.waitUntil(postToDiscord(config, values, spam, env));
 
 	try {
 		await env.CONTACT_EMAIL.send({
 			from: { email: env.CONTACT_FROM, name: "adamwills.dev" },
 			to: env.CONTACT_TO,
 			replyTo: { email: values.email, name },
-			subject: config.subject(name).slice(0, 200),
+			subject: `${spam.spam ? "[Spam?] " : ""}${config.subject(name)}`.slice(0, 200),
 			text,
 		});
 	} catch (err) {
@@ -137,7 +142,7 @@ async function handleForm(config, request, env, ctx) {
 
 // Posts the submission to a Discord channel through a webhook. Best effort: a Discord
 // failure is logged and never stops the visitor's submission.
-async function postToDiscord(config, values, env) {
+async function postToDiscord(config, values, spam, env) {
 	if (!env.DISCORD_WEBHOOK_URL) return;
 
 	const clip = (text, max) => (text.length > max ? `${text.slice(0, max - 1)}…` : text);
@@ -145,6 +150,7 @@ async function postToDiscord(config, values, env) {
 	const fields = entries
 		.filter(([, spec]) => !spec.body)
 		.map(([name, spec]) => ({ name: spec.label, value: clip(values[name], 1024), inline: values[name].length < 40 }));
+	if (spam.spam) fields.unshift({ name: "Likely spam", value: clip(spam.reason, 1024), inline: false });
 	const description = entries
 		.filter(([, spec]) => spec.body)
 		.map(([name, spec]) => `**${spec.label}**\n${values[name]}`)
@@ -160,7 +166,9 @@ async function postToDiscord(config, values, env) {
 				allowed_mentions: { parse: [] },
 				embeds: [
 					{
-						title: clip(`${config.title}: ${values[config.nameField]}`, 256),
+						title: clip(`${spam.spam ? "⚠️ Likely spam · " : ""}${config.title}: ${values[config.nameField]}`, 256),
+						// Grey side bar on likely spam, so it reads as muted next to real leads.
+						color: spam.spam ? 0x6b7280 : undefined,
 						// Discord rejects embeds over 6,000 characters in total; this leaves room for the fields.
 						description: clip(description, 2500) || undefined,
 						fields: fields.slice(0, 25),

@@ -20,6 +20,8 @@
 			"allowed_sender_addresses": ["contact@adamwills.dev"]
 		}
 	],
+	// Workers AI, used to label likely spam form submissions (worker/spam.js).
+	"ai": { "binding": "AI" },
 	"vars": {
 		"CONTACT_FROM": "contact@adamwills.dev",
 		"CONTACT_TO": "adam@adamwills.com"
