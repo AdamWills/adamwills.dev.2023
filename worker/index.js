@@ -121,6 +121,9 @@ async function handleForm(config, request, env, ctx) {
 	const name = values[config.nameField];
 	ctx.waitUntil(postToDiscord(config, values, spam, env));
 
+	// Certain spam only goes to Discord. The visitor sees the usual success page either way.
+	if (spam.certain) return redirect(request, config.redirectTo);
+
 	try {
 		await env.CONTACT_EMAIL.send({
 			from: { email: env.CONTACT_FROM, name: "adamwills.dev" },
@@ -150,7 +153,9 @@ async function postToDiscord(config, values, spam, env) {
 	const fields = entries
 		.filter(([, spec]) => !spec.body)
 		.map(([name, spec]) => ({ name: spec.label, value: clip(values[name], 1024), inline: values[name].length < 40 }));
-	if (spam.spam) fields.unshift({ name: "Likely spam", value: clip(spam.reason, 1024), inline: false });
+	if (spam.spam) {
+		fields.unshift({ name: spam.certain ? "Spam, not emailed" : "Likely spam", value: clip(spam.reason, 1024), inline: false });
+	}
 	const description = entries
 		.filter(([, spec]) => spec.body)
 		.map(([name, spec]) => `**${spec.label}**\n${values[name]}`)
@@ -166,7 +171,7 @@ async function postToDiscord(config, values, spam, env) {
 				allowed_mentions: { parse: [] },
 				embeds: [
 					{
-						title: clip(`${spam.spam ? "⚠️ Likely spam · " : ""}${config.title}: ${values[config.nameField]}`, 256),
+						title: clip(`${spam.certain ? "🚫 Spam · " : spam.spam ? "⚠️ Likely spam · " : ""}${config.title}: ${values[config.nameField]}`, 256),
 						// Grey side bar on likely spam, so it reads as muted next to real leads.
 						color: spam.spam ? 0x6b7280 : undefined,
 						// Discord rejects embeds over 6,000 characters in total; this leaves room for the fields.
