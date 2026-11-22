@@ -5,12 +5,17 @@
 //   posted to Discord, marked as likely spam. Losing a real lead costs far more than reading a junk one.
 
 // Tried in order: if one errors (Workers AI sometimes returns "capacity temporarily
-// exceeded"), the next is tried, all within one overall time budget.
+// exceeded") or hangs past its own timeout, the next is tried. Each model has its own
+// timeout so a hung first model can't use up the time the fallback needs. Normally the
+// first answers in about a second.
 const MODELS = [
-	{ name: "@cf/google/gemma-4-26b-a4b-it", options: { chat_template_kwargs: { enable_thinking: false } } },
-	{ name: "@cf/meta/llama-3.3-70b-instruct-fp8-fast", options: {} },
+	{ name: "@cf/google/gemma-4-26b-a4b-it", timeoutMs: 3000, options: { chat_template_kwargs: { enable_thinking: false } } },
+	{ name: "@cf/meta/llama-3.3-70b-instruct-fp8-fast", timeoutMs: 4000, options: {} },
 ];
-const AI_BUDGET_MS = 5000;
+
+// Known spammers, matched case-insensitively against every field (including the email
+// address). A match is certain spam, so it isn't emailed. Add repeat offenders here.
+const BLOCKLIST = ["insaneleads"];
 
 // Markup a person typing into a plain textarea never produces: HTML tags and BBCode links.
 const MARKUP = /<\/?[a-z][a-z0-9]*(\s[^>]*)?>|\[url[=\]]/i;
@@ -52,6 +57,11 @@ export async function checkSpam(config, values, env) {
 	const entries = Object.entries(config.fields).filter(([name]) => values[name] && name !== "email");
 	const freeText = entries.filter(([, spec]) => spec.body).map(([name]) => values[name]);
 
+	const everything = Object.values(values).join("\n").toLowerCase();
+	const blocked = BLOCKLIST.find((term) => everything.includes(term));
+	if (blocked) {
+		return { spam: true, certain: true, reason: `Known spammer (${blocked})` };
+	}
 	if (entries.some(([name]) => MARKUP.test(values[name]))) {
 		return { spam: true, certain: true, reason: "Contains HTML or BBCode markup" };
 	}
@@ -68,12 +78,9 @@ export async function checkSpam(config, values, env) {
 	if (!freeText.length || !env.AI) return { spam: false };
 
 	const submission = entries.map(([name, spec]) => `${spec.label}: ${values[name]}`).join("\n");
-	const deadline = Date.now() + AI_BUDGET_MS;
 	for (const model of MODELS) {
-		const remaining = deadline - Date.now();
-		if (remaining <= 0) break;
 		try {
-			const verdict = await classify(env, model, config.title, submission, remaining);
+			const verdict = await classify(env, model, config.title, submission, model.timeoutMs);
 			if (verdict.spam === true) {
 				return { spam: true, reason: `AI: ${String(verdict.reason || "looks like spam").slice(0, 200)}` };
 			}
