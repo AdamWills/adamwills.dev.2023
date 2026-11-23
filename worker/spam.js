@@ -1,6 +1,7 @@
 // Spam check for form submissions. Two levels:
 // - certain: rules that a genuine visitor never trips (text in a non-Latin alphabet, HTML or
-//   BBCode markup). Not emailed, only posted to Discord with a label, so a mistake is still visible.
+//   BBCode markup, known spammers). Not emailed or posted to Discord, only written to the Worker
+//   logs, so a genuine message caught by mistake can still be found.
 // - likely: everything else that looks like spam, including every AI verdict. Still emailed and
 //   posted to Discord, marked as likely spam. Losing a real lead costs far more than reading a junk one.
 
