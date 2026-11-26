@@ -46,6 +46,22 @@
 		}
 		</script>
 		{%- endif %}
+		{%- if tags and "posts" in tags %}
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "BlogPosting",
+			"headline": {{ title | dump | safe }},
+			"description": {{ description | dump | safe }},
+			"datePublished": "{{ page.date | htmlDateString }}",
+			"dateModified": "{{ (updated or page.date) | htmlDateString }}",
+			"mainEntityOfPage": "{{ metadata.url }}{{ page.url }}",
+			"image": "{{ metadata.url }}/img/social.png",
+			"author": {"@type": "Person", "@id": "https://adamwills.dev/#adam", "name": "Adam Wills", "url": "https://adamwills.dev/"},
+			"publisher": {"@type": "Organization", "@id": "https://adamwills.dev/#business", "name": "Adam Wills Development", "url": "https://adamwills.dev/"}
+		}
+		</script>
+		{%- endif %}
 		<link rel="preconnect" href="https://use.typekit.net">
 		<link rel="preconnect" href="https://res.cloudinary.com">
 		<link rel="dns-prefetch" href="https://use.typekit.net">
